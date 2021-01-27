@@ -1,0 +1,13 @@
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.RDBMS',
+        'NAME': 'database_name',
+        'USER': 'user_database',
+        'PASSWORD': 'password_database',
+        'HOST': 'machine_server',
+    }
+}
+
+
+SECRET_KEY = 'secret_key'
