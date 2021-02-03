@@ -4,12 +4,13 @@ from tinymce.models import HTMLField
 
 
 class UserInfo(models.Model):
+    alias_name = models.CharField('نام مستعار', max_length=30)
     phone_number = models.CharField('شماره تلفن', max_length=11)
     image = models.ImageField('عکس پروفایل', upload_to='images/')
     user = models.OneToOneField(User, verbose_name='کاربر', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user.name
+        return self.user.first_name
 
 
 class MyModel(models.Model):
@@ -52,7 +53,7 @@ class Label(models.Model):
 class Post(Text):
     title = models.CharField('عنوان', max_length=30)
     # text = models.TextField('متن', max_length=1000)
-    image = models.ImageField('عکس پست', upload_to='media/post_images/')
+    image = models.ImageField('عکس پست', upload_to='post_images/')
     pub_date = models.CharField('زمان انتشار', max_length=30)
     activation = models.BooleanField('فعال/غیرفعال', default=False)
     verification = models.BooleanField('تایید کردن محتوای پست', default=False)

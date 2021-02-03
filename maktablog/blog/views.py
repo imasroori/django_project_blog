@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import generic
 
-from .models import Post, MyModel
+from .models import Post, MyModel, UserInfo
 
 
 def index(request):
@@ -12,7 +12,18 @@ def index(request):
 
 def register(request):
     if request.POST:
-        pass
+        f_name = request.POST['first_name']
+        l_name = request.POST['last_name']
+        alias_name = request.POST['alias_name']
+        user_name = request.POST['username']
+        pass_word = request.POST['password']
+        phone = request.POST['phone_number']
+        img = request.POST['image_profile']
+        user = User.objects.create_user(password=pass_word, username=user_name, first_name=f_name, last_name=l_name)
+        user.is_staff = True
+        userinfo = UserInfo.objects.create(user=user, phone_number=phone, alias_name=alias_name, image=img)
+        userinfo.save()
+        user.save()
     return HttpResponse(render(request, 'blog/register_form.html'))
 
 
