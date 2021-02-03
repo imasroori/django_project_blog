@@ -1,24 +1,32 @@
 from django.contrib.auth.models import User
 from django.db import models
+from tinymce.models import HTMLField
 
 
 class UserInfo(models.Model):
     phone_number = models.CharField('شماره تلفن', max_length=11)
     image = models.ImageField('عکس پروفایل', upload_to='images/')
-    user = models.ForeignKey(User, verbose_name='کاربر', on_delete=models.CASCADE)
+    user = models.OneToOneField(User, verbose_name='کاربر', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.name
 
 
+class MyModel(models.Model):
+    content = HTMLField()
+
+    def __str__(self):
+        return self.content
+
+
 class Text(models.Model):
-    text = models.CharField("متن", max_length=500)
+    text = models.TextField("متن")
     likes = models.ManyToManyField(User,
                                    related_name='%(app_label)s_liked_%(class)ss',
-                                   related_query_name='%(app_label)s_liked_%(class)ss')
+                                   related_query_name='%(app_label)s_liked_%(class)ss', null=True, blank=True)
     dislikes = models.ManyToManyField(User,
                                       related_name='%(app_label)s_disliked_%(class)ss',
-                                      related_query_name='%(app_label)s_disliked_%(class)ss')
+                                      related_query_name='%(app_label)s_disliked_%(class)ss', null=True, blank=True)
     user = models.ForeignKey(User, verbose_name='کاربر', on_delete=models.CASCADE)
 
     class Meta:
@@ -27,7 +35,8 @@ class Text(models.Model):
 
 class Category(models.Model):
     category_name = models.CharField('دسته بندی', max_length=30)
-    category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='category_sub')
+    category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='category_sub', null=True,
+                                 blank=True)
 
     def __str__(self):
         return self.category_name
@@ -43,7 +52,7 @@ class Label(models.Model):
 class Post(Text):
     title = models.CharField('عنوان', max_length=30)
     # text = models.TextField('متن', max_length=1000)
-    image = models.ImageField('عکس پست', upload_to='images/')
+    image = models.ImageField('عکس پست', upload_to='media/post_images/')
     pub_date = models.CharField('زمان انتشار', max_length=30)
     activation = models.BooleanField('فعال/غیرفعال', default=False)
     verification = models.BooleanField('تایید کردن محتوای پست', default=False)

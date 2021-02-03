@@ -1,0 +1,86 @@
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>وبلاگ سخن</title>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font_style.css' %}">
+
+</head>
+
+<body dir="rtl">
+<div class="row p-4 m-0 h2 justify-content-around">
+    {% block header %}
+    <div>
+        <a class="text-decoration-none" href="{% url 'blog:index' %}">
+
+            وبلاگ سخن
+
+        </a>
+    </div>
+    <div class="d-flex justify-content-between">
+        {% if user.is_authenticated %}
+        <div class="mr-1 ml-1"><p>خوش اومدین، {{user.username}}</p></div>
+        <div class="mr-1 ml-1"><a class="btn btn-danger" href="{% url 'logout' %}">خروج </a>
+        </div>
+        {% else %}
+        <div class="mr-1 ml-1">
+            <a class="btn btn-info" href="{% url 'blog:register' %}">ثبت نام</a>
+        </div>
+        <div class="mr-1 ml-1">
+            <a class="btn btn-info" href="{% url 'login' %}">ورود </a>
+        </div>
+        {% endif %}
+    </div>
+
+    {% endblock %}
+</div>
+
+<nav class="navbar navbar-inverse navbar-expand-sm bg-light border">
+    {% block navbar %}
+    <div class="container-fluid">
+        <ul class="navbar-nav">
+            {% if user.is_authenticated %}
+            <li class="nav-item border">
+                <a class="nav-link h5" href="{% url 'blog:profile' user.id %}">ثبت نام</a>
+            </li>
+            {% else %}
+            <li class="nav-item border">
+                <a class="nav-link h5" href="{% url 'blog:register' %}">ثبت نام</a>
+            </li>
+            {% endif %}
+            <li class="nav-item border">
+                <a class="nav-link h5" href="{% url 'blog:show_all_posts' %}">نمایش پست ها</a>
+            </li>
+
+
+        </ul>
+        <ul class="navbar-nav navbar-right">
+            <li class="nav-item border">
+                <a class="nav-link h5" href="\admin">مدیریت</a>
+            </li>
+        </ul>
+    </div>
+    {% endblock %}
+</nav>
+
+
+<div class="container h1 text-center p-5 mb-5">
+    {% block content %}
+    به وبلاگ سخن خوش آمدید، <br><br>سخن جایی برای نوشتن و اندیشیدن
+    {% endblock %}
+</div>
+
+
+<div class="text-center p-3 mt-5" style="background-color: rgba(0, 0, 0, 0.2)">
+    {% block footer %}
+    © کلیه حقوق این سایت متعلق به گروه وبلاگ سخن است.
+    {% endblock %}
+</div>
+
+
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>

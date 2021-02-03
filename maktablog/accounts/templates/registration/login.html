@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+{% block content %}
+<div class="container w-50 p-2">
+
+    <form class="" action="{% url 'login' %}" method="POST">
+        {% csrf_token %}
+
+        {{ form | bootstrap }}
+        {% if next %}
+        <input type="hidden" name="next" value="{{ next }}">
+        {% else %}
+        <input type="hidden" name="next" value="/blog/">
+        {% endif %}
+        <button type="submit" class="btn btn-primary">ورود</button>
+
+
+    </form>
+
+</div>
+{% endblock %}

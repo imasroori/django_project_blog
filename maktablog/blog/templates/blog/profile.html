@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if user_profile %}
+<p>{{user_profile.first_name}}</p>
+<p>{{user_profile.last_name}}</p>
+<p>{{user_profile.email}}</p>
+<p>{{user_profile.image}}</p>
+
+{% else %}
+<p>nist</p>
+{% endif %}
+{% endblock %}
