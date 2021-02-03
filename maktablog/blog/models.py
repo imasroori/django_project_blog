@@ -11,13 +11,18 @@ class UserInfo(models.Model):
         return self.user.name
 
 
-class Like(models.Model):
-    like_number = models.IntegerField('پسندیدن', default=0)
-    dislike_number = models.IntegerField('نپسندیدن', default=0)
+class Text(models.Model):
+    text = models.CharField("متن", max_length=500)
+    likes = models.ManyToManyField(User,
+                                   related_name='%(app_label)s_liked_%(class)ss',
+                                   related_query_name='%(app_label)s_liked_%(class)ss')
+    dislikes = models.ManyToManyField(User,
+                                      related_name='%(app_label)s_disliked_%(class)ss',
+                                      related_query_name='%(app_label)s_disliked_%(class)ss')
     user = models.ForeignKey(User, verbose_name='کاربر', on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.user.name
+    class Meta:
+        abstract = True
 
 
 class Category(models.Model):
@@ -35,16 +40,16 @@ class Label(models.Model):
         return self.label_name
 
 
-class Post(models.Model):
+class Post(Text):
     title = models.CharField('عنوان', max_length=30)
-    text = models.TextField('متن', max_length=1000)
+    # text = models.TextField('متن', max_length=1000)
     image = models.ImageField('عکس پست', upload_to='images/')
     pub_date = models.CharField('زمان انتشار', max_length=30)
     activation = models.BooleanField('فعال/غیرفعال', default=False)
     verification = models.BooleanField('تایید کردن محتوای پست', default=False)
     category = models.ForeignKey(Category, verbose_name='دسته بندی', on_delete=models.CASCADE)
-    like = models.ForeignKey(Like, verbose_name='پسندیدن/نپسندیدن', on_delete=models.CASCADE)
-    user = models.ForeignKey(User, verbose_name='کاربر', on_delete=models.CASCADE)
+    # like = models.ForeignKey(Like, verbose_name='پسندیدن/نپسندیدن', on_delete=models.CASCADE)
+    # user = models.ForeignKey(User, verbose_name='کاربر', on_delete=models.CASCADE)
     labelpost = models.ManyToManyField(Label,
                                        through='LabelPost',
                                        through_fields=('post', 'label'),
@@ -54,13 +59,14 @@ class Post(models.Model):
         return self.text
 
 
-class Comment(models.Model):
-    text = models.TextField('متن نظر')
+class Comment(Text):
+    # text = models.TextField('متن نظر')
     date = models.CharField('زمان انتشار', max_length=30)
     verification = models.BooleanField('تایید کردن محتوای نظر', default=False)
-    user = models.ForeignKey(User, verbose_name='کاربر', on_delete=models.CASCADE)
+    # user = models.ForeignKey(User, verbose_name='کاربر', on_delete=models.CASCADE)
     post = models.ForeignKey(Post, verbose_name='پست', on_delete=models.CASCADE)
-    like = models.ForeignKey(Like, verbose_name='پسندیدن/نپسندیدن', on_delete=models.CASCADE)
+
+    # like = models.ForeignKey(Like, verbose_name='پسندیدن/نپسندیدن', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.text
