@@ -5,14 +5,34 @@
 {% for item in posts %}
 
 
-<div class="card mb-5 bg-dark">
+<!--<div class="card mb-5 bg-dark">-->
+<!--    <a class="text-decoration-none" href="{% url 'blog:show_post' item.id %}">-->
+<!--        <img class="card-img-top" src="{{item.image}}" alt="عکس پیدا نشد">-->
+<!--        <div class="card-body">-->
+<!--            <h5 class="card-title">{{item.title}}</h5>-->
+<!--            <p class="card-text">{{item.text}}</p>-->
+<!--            <p class="card-text"><small class="text-muted">{{item.pub_date}}</small></p>-->
+<!--            <p class="card-text"><small class="text-muted">نویسنده: {{item.user.first_name}}</small></p>-->
+<!--        </div>-->
+<!--    </a>-->
+<!--</div>-->
+
+
+<div class="card mb-3">
     <a class="text-decoration-none" href="{% url 'blog:show_post' item.id %}">
-        <img class="card-img-top" src="{{item.image}}" alt="عکس پیدا نشد">
-        <div class="card-body">
-            <h5 class="card-title">{{item.title}}</h5>
-            <p class="card-text">{{item.text}}</p>
-            <p class="card-text"><small class="text-muted">{{item.pub_date}}</small></p>
-            <p class="card-text"><small class="text-muted">نویسنده: {{item.user.first_name}}</small></p>
+        <div class="row g-0">
+
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title text-right">{{item.title}}</h5>
+                    <p class="card-text text-right">{{item.text}}</p>
+                    <span class="card-text"><small class="text-muted">{{item.pub_date}} , </small></span>
+                    <span class="card-text"><small class="text-muted">نویسنده: {{item.user.first_name}}</small></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <img src="{{item.image}}" alt="گشتیم ولی عکسی نبود لطفا اصرار نکن!!!">
+            </div>
         </div>
     </a>
 </div>
