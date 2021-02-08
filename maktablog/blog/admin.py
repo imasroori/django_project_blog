@@ -27,10 +27,11 @@ class CommentInline(admin.StackedInline):
 class PostAdmin(admin.ModelAdmin):
     fieldsets = (
         ("اطلاعات پست", {'fields': ('user','title', 'image', 'text',)}),
-        # ("زمان و تاریخ", {'fields': ('pub_date',)}),
+        ("زمان و تاریخ", {'fields': ('created_at',)}),
         ("وضعیت", {'fields': ('activation', 'verification')}),
         ("طبقه بندی و برچسب ها", {'fields': ('category',)}),
     )
+    readonly_fields = ('created_at','updated_at')
     inlines = [LabelPostInline]
 
 

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load custom_tags %}
 {% block content %}
 
 <div class="container">
@@ -14,7 +14,7 @@
                 <div><img class="rounded-circle" src="media/{{post.user.userinfo.image}}" alt="555"></div>
                 <div class="card-body text-right text-light">
                     <h5 class="card-title">{{post.title}}</h5>
-                    <p class="card-text"><small class="">{{post.pub_date}}</small></p>
+                    <p class="card-text"><small class="">{{post.created_at|convert_to_jdate}}</small></p>
                 </div>
 
             </div>

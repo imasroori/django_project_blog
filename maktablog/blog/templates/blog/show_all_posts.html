@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load custom_tags %}
 {% block content %}
 {% if posts %}
 {% for item in posts %}
@@ -25,13 +25,15 @@
             <div class="col-md-8">
                 <div class="card-body">
                     <h5 class="card-title text-right">{{item.title}}</h5>
-                    <p class="card-text text-right">{{item.text}}</p>
-                    <span class="card-text"><small class="text-muted">{{item.pub_date}} , </small></span>
+                    <p class="card-text text-right" style="height:150px;  white-space: nowrap;  overflow: hidden;
+  text-overflow: ellipsis;">{{item.text}}</p>
+                    <span class="card-text"><small
+                            class="text-muted">{{item.created_at|convert_to_jdate}} , </small></span>
                     <span class="card-text"><small class="text-muted">نویسنده: {{item.user.first_name}}</small></span>
                 </div>
             </div>
             <div class="col-md-4">
-                <img src="{{item.image}}" alt="گشتیم ولی عکسی نبود لطفا اصرار نکن!!!">
+                <img class="w-100 h-100" src="/media/{{item.image}}" alt="گشتیم ولی عکسی نبود لطفا اصرار نکن!!!">
             </div>
         </div>
     </a>

@@ -54,7 +54,8 @@ class Post(Text):
     title = models.CharField('عنوان', max_length=30)
     # text = models.TextField('متن', max_length=1000)
     image = models.ImageField('عکس پست', upload_to='post_images/')
-    pub_date = models.DateTimeField('زمان انتشار', max_length=30, auto_now=True)
+    created_at = models.DateTimeField('زمان ایجاد پست', max_length=30, auto_now_add=True)
+    updated_at = models.DateTimeField('زمان بروزرسانی پست', max_length=30, auto_now=True)
     activation = models.BooleanField('فعال/غیرفعال', default=False)
     verification = models.BooleanField('تایید کردن محتوای پست', default=False)
     category = models.ForeignKey(Category, verbose_name='دسته بندی', on_delete=models.CASCADE)
@@ -63,6 +64,7 @@ class Post(Text):
     labelpost = models.ManyToManyField(Label,
                                        through='LabelPost',
                                        through_fields=('post', 'label'),
+
                                        )
 
     def __str__(self):
@@ -83,7 +85,7 @@ class Comment(Text):
 
 
 class LabelPost(models.Model):
-    post = models.ForeignKey(Post, verbose_name='پست', on_delete=models.CASCADE, related_name='post')
+    post = models.ForeignKey(Post, verbose_name='پست', on_delete=models.CASCADE,related_name='post')
     label = models.ForeignKey(Label, verbose_name='برچسب', on_delete=models.CASCADE)
 
     def __str__(self):
