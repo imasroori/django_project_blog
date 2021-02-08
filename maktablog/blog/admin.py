@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth.models import User
 
 from .models import Post, Comment, Label, Category, UserInfo, LabelPost, MyModel
 
@@ -26,7 +27,7 @@ class CommentInline(admin.StackedInline):
 class PostAdmin(admin.ModelAdmin):
     fieldsets = (
         ("اطلاعات پست", {'fields': ('user','title', 'image', 'text',)}),
-        ("زمان و تاریخ", {'fields': ('pub_date',)}),
+        # ("زمان و تاریخ", {'fields': ('pub_date',)}),
         ("وضعیت", {'fields': ('activation', 'verification')}),
         ("طبقه بندی و برچسب ها", {'fields': ('category',)}),
     )

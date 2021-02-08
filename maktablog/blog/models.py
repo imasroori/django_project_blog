@@ -54,7 +54,7 @@ class Post(Text):
     title = models.CharField('عنوان', max_length=30)
     # text = models.TextField('متن', max_length=1000)
     image = models.ImageField('عکس پست', upload_to='post_images/')
-    pub_date = models.CharField('زمان انتشار', max_length=30)
+    pub_date = models.DateTimeField('زمان انتشار', max_length=30, auto_now=True)
     activation = models.BooleanField('فعال/غیرفعال', default=False)
     verification = models.BooleanField('تایید کردن محتوای پست', default=False)
     category = models.ForeignKey(Category, verbose_name='دسته بندی', on_delete=models.CASCADE)
