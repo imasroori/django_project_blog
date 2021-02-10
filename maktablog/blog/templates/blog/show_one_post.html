@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load custom_tags %}
+{% block content %}
+{% if post_detail %}
+<div class="container">
+    <div class="card m-5 border border-success">
+        <div class="row justify-content-between text-right m-3">
+
+            <div class="">
+                <img class="rounded-circle" src="/media/{{post_detail.user.userinfo.image}}" alt="555">
+            </div>
+            <div class="h6 d-flex ml-auto align-items-center m-2">
+
+                {{ post_detail.user.first_name}}
+                {{post_detail.user.last_name }} <br/>
+                {{ post_detail.created_at|convert_to_jdate}}
+
+            </div>
+
+            <div>
+                <i class="fa fa-star-o fa-2x"></i>
+            </div>
+
+        </div>
+        <div class="m-4 text-right">
+            <h3>{{post_detail.title}}</h3>
+        </div>
+        <img class="card-img-top" style="height:300px" src="/media/{{post_detail.image}}" alt="عکس پیدا نشد">
+        <div class="card-body">
+
+            <p class="card-text text-right h5">{{post_detail.text}}</p>
+
+            <p class="card-text text-left"><small class="text-muted">{{post_detail.created_at|convert_to_jdate}}</small>
+            </p>
+        </div>
+
+        <div class="footer">
+            <ul class="text-right list-unstyled d-flex m-2">
+                {% for item in post_detail.post.all %}
+
+                <li class="m-2">
+                    <a class="d-inline p-2 h3 rounded text-decoration-none"
+                       style="color:#006e2c; background:#ccf1db;a:hover{" href=""> {{item.label.label_name}} </a>
+                </li>
+                {% endfor %}
+            </ul>
+            <div>
+                <a href="#" type="button" class="btn btn-outline-success btn-lg px-2 waves-effect show_login">
+                    <span class="value">0</span>
+                    <i class="fa fa-thumbs-up ml-1 fa-2x"></i>
+                </a>
+                <a href="#" type="button" class="btn btn-outline-danger btn-lg px-2 waves-effect show_login">
+                    <span class="value">0</span>
+                    <i class="fa fa-thumbs-down ml-1 fa-2x"></i>
+                </a>
+
+            </div>
+        </div>
+
+
+        <div class="container">
+            <div class="page-content">
+                <div class="section--title">نظرات کاربران</div>
+                <div class="section-body">
+                    <div data-action="modal" class="responses-editor card-cm">
+                        <div class="responses-editor-inner">
+                            <div class="responses-header">
+                                <div class="user--avatar">
+                                    <img src="https://virgool.io/images/default-avatar.jpg" alt="">
+                                </div>
+                                <span class="user--name" data-placeholder="نظر خود را درباره این پست بنویسید"></span>
+                            </div>
+                            <div class="responses-text">
+                                <form id="commentsFormPost" method="POST"
+                                      action="">
+                                    <input type="hidden" name="_token" value="dAgkkYt4KnQt9TXV707Ruhgf72j6u8cExzQLmy9J">
+                                    <div class="responses-textArea">
+                                        <textarea id="commentBody" class="textarea" name="comment_body"
+                                                  data-autoresize=""
+                                                  style="overflow: hidden; overflow-wrap: break-word; height: 100px;"></textarea>
+                                    </div>
+                                    <div class="responses-buttons">
+                                        <button class="btn bg-warning btn-main btn-rounded btn-lg block-end"
+                                                type="submit">
+                                            ارسال
+                                            دیدگاه
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% else %}
+<p>nist</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load custom_tags %}
+{% block content %}
+{% if categories %}
+<div class="container text-right">
+    <div class="row pt-5">
+
+        <div>
+
+            {% for item in categories %}
+            <div class="card mb-3">
+                <a class="text-decoration-none" href="{% url 'blog:posts_in_category' item.id %}">
+                   {{item}}
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+{% else %}
+<p>nist</p>
+{% endif %}
+{% endblock %}

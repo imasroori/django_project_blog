@@ -1,214 +1,0 @@
-{% extends "base.html" %}
-{% load custom_tags %}
-{% block content %}
-{% if post_detail %}
-
-<div class="card mb-3 border border-success">
-    <div class="row text-right m-3">
-        <div class="">
-            <img class="rounded-circle" src="/media/{{post_detail.user.userinfo.image}}" alt="555">
-        </div>
-        <div class="h6 d-flex align-items-center m-2">
-
-            {{ post_detail.user.first_name}}
-            {{post_detail.user.last_name }} <br/>
-            {{ post_detail.created_at|convert_to_jdate}}
-
-        </div>
-
-
-    </div>
-    <div class="m-4 text-right">
-        <h3>{{post_detail.title}}</h3>
-    </div>
-    <img class="card-img-top" src="/media/{{post_detail.image}}" alt="عکس پیدا نشد">
-    <div class="card-body">
-
-        <p class="card-text text-right h5">{{post_detail.text}}</p>
-
-        <p class="card-text text-left"><small class="text-muted">{{post_detail.created_at|convert_to_jdate}}</small></p>
-    </div>
-
-    <div class="footer">
-        <ul class="text-right list-unstyled d-flex m-2">
-            {% for item in post_detail.post.all %}
-
-            <li class="m-2">
-                <a class="d-inline p-2 h3 rounded text-decoration-none"
-                   style="color:#006e2c; background:#ccf1db;a:hover{" href=""> {{item.label.label_name}} </a>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-
-
-    <div class="container">
-        <div class="page-content">
-            <div class="section--title">نظرات کاربران</div>
-            <div class="section-body">
-                <div data-action="modal" class="responses-editor card-cm">
-                    <div class="responses-editor-inner">
-                        <div class="responses-header">
-                            <div class="user--avatar">
-                                <img src="https://virgool.io/images/default-avatar.jpg" alt="">
-                            </div>
-                            <span class="user--name" data-placeholder="نظر خود را درباره این پست بنویسید"></span>
-                        </div>
-                        <div class="responses-text">
-                            <form id="commentsFormPost" method="POST"
-                                  action="">
-                                <input type="hidden" name="_token" value="dAgkkYt4KnQt9TXV707Ruhgf72j6u8cExzQLmy9J">
-                                <div class="responses-textArea">
-                                        <textarea id="commentBody" class="textarea" name="comment_body"
-                                                  data-autoresize=""
-                                                  style="overflow: hidden; overflow-wrap: break-word; height: 100px;"></textarea>
-                                </div>
-                                <div class="responses-buttons">
-                                    <button class="btn bg-warning btn-main btn-rounded btn-lg block-end" type="submit">
-                                        ارسال
-                                        دیدگاه
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="comments-list js-comment-list">
-                    <div class="comments-list">
-                        <div class="comment-box">
-                            <div class="commentBoxItem card-cm">
-                                <div class="cm-header">
-                                    <div class="userInfo popover-box js-popover" data-user-hash="lvkpnsepgzgx">
-                                        <div class="userInfo--avatar js-popover-append">
-                                            <a class="avatar" href="https://virgool.io/@alifallahrn">
-                                                <img src="https://files.virgool.io/upload/users/8696/avatar/QIEuNG.png?x-img=v1/resize,h_120,w_120/optimize,q_100"
-                                                     alt="علی فلاح">
-                                            </a>
-                                        </div>
-                                        <div class="more">
-                                            <a class="name" href="https://virgool.io/@alifallahrn">علی فلاح</a>
-                                            <time class="readTime">۲ سال پیش</time>
-                                        </div>
-                                    </div>
-                                    <div class="comment-actions">
-                                        <button data-action="modal">
-                                            <svg width="20" height="17" viewBox="21 32 19 16">
-                                                <g transform="translate(22.000000, 33.000000)">
-                                                    <path d="M6.9999994,3.99999946 L6.9999994,-3.00000465e-07 L-1.79999915e-07,6.99999928 L6.9999994,13.9999989 L6.9999994,9.89999871 C11.9999991,9.89999871 15.4999989,11.499999 17.9999987,14.9999988 C16.9999988,9.9999991 13.999999,4.9999994 6.9999994,3.99999946 Z"></path>
-                                                </g>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="cm-body js--linkify">خوشحال شدم که بعد مدتها بازم نوشتی، اتفاقا توییتت
-                                    در مورد انجام دادن تسک ها رو دنبال کردم و کامنتاشم خوندم. اینکه الان گفتی "بعضی
-                                    از اون‌ها رو امتحان کردن و الان رسیدم به روزی 3-4 ساعت کار که به نظرم تا 8 ساعت
-                                    هم جا داره!" خیلی جالب بود، ممنون میشم یه توضیحی بدی که کدوم راه ها رو تست کردی
-                                    و چیکار کردی که بهره وریت بالا رفته و قراره باز هم بهتر بشه
-                                </div>
-                            </div>
-                            <div data-action="modal" class="responses-editor card-cm">
-                                <div class="responses-editor-inner">
-                                    <div class="responses-header">
-                                        <div class="user--avatar">
-                                            <img src="https://virgool.io/images/default-avatar.jpg" alt="">
-                                        </div>
-                                        <span class="user--name"
-                                              data-placeholder="نظر خود را درباره این پست بنویسید"></span>
-                                    </div>
-                                    <div class="responses-text">
-                                        <form id="commentsFormPost" method="POST"
-                                              action="/@shahram/posts/خداحافظ-کارمندی-سلام-فریلنسری-ارزی-sdjqtofyqwwd/comments">
-                                            <input type="hidden" name="_token"
-                                                   value="dAgkkYt4KnQt9TXV707Ruhgf72j6u8cExzQLmy9J">
-                                            <input id="commentParentId" type="hidden" name="parent_id"
-                                                   value="96920">
-                                            <div class="responses-textArea">
-                                                    <textarea id="commentBody" class="textarea" name="comment_body"
-                                                              data-autoresize=""
-                                                              style="overflow: hidden; overflow-wrap: break-word;"></textarea>
-                                            </div>
-                                            <div class="responses-buttons">
-                                                <button class="btn btn-main btn-rounded btn-lg block-end"
-                                                        type="submit">ارسال دیدگاه
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="comments-list">
-                                <div class="comment-box">
-                                    <div class="commentBoxItem card-cm">
-                                        <div class="cm-header">
-                                            <div class="userInfo popover-box js-popover"
-                                                 data-user-hash="dyy5shm6r8qt">
-                                                <div class="userInfo--avatar js-popover-append">
-                                                    <a class="avatar" href="https://virgool.io/@hamid">
-                                                        <img src="https://files.virgool.io/upload/users/449/avatar/JOAEKL.png?x-img=v1/resize,h_120,w_120/optimize,q_100"
-                                                             alt="حمید کریمی">
-                                                    </a>
-                                                </div>
-                                                <div class="more">
-                                                    <a class="name" href="https://virgool.io/@hamid">حمید کریمی</a>
-                                                    <time class="readTime">۲ سال پیش</time>
-                                                </div>
-                                            </div>
-                                            <div class="comment-actions">
-                                                <button data-action="modal">
-                                                    <svg width="20" height="17" viewBox="21 32 19 16">
-                                                        <g transform="translate(22.000000, 33.000000)">
-                                                            <path d="M6.9999994,3.99999946 L6.9999994,-3.00000465e-07 L-1.79999915e-07,6.99999928 L6.9999994,13.9999989 L6.9999994,9.89999871 C11.9999991,9.89999871 15.4999989,11.499999 17.9999987,14.9999988 C16.9999988,9.9999991 13.999999,4.9999994 6.9999994,3.99999946 Z"></path>
-                                                        </g>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="cm-body js--linkify">من هم موافقم، این رو هم توضیح بدی حالا در
-                                            قالب یک پست و یا همینجا تو کامنت، ممنون میشم 😁
-                                        </div>
-                                    </div>
-                                    <div data-action="modal" class="responses-editor card-cm">
-                                        <div class="responses-editor-inner">
-                                            <div class="responses-header">
-                                                <div class="user--avatar">
-                                                    <img src="https://virgool.io/images/default-avatar.jpg" alt="">
-                                                </div>
-                                                <span class="user--name"
-                                                      data-placeholder="نظر خود را درباره این پست بنویسید"></span>
-                                            </div>
-                                            <div class="responses-text">
-                                                <form id="commentsFormPost" method="POST"
-                                                      action="/@shahram/posts/خداحافظ-کارمندی-سلام-فریلنسری-ارزی-sdjqtofyqwwd/comments">
-                                                    <input type="hidden" name="_token"
-                                                           value="dAgkkYt4KnQt9TXV707Ruhgf72j6u8cExzQLmy9J">
-                                                    <input id="commentParentId" type="hidden" name="parent_id"
-                                                           value="96992">
-                                                    <div class="responses-textArea">
-                                                            <textarea id="commentBody" class="textarea"
-                                                                      name="comment_body" data-autoresize=""
-                                                                      style="overflow: hidden; overflow-wrap: break-word;"></textarea>
-                                                    </div>
-                                                    <div class="responses-buttons">
-                                                        <button class="btn btn-main btn-rounded btn-lg block-end"
-                                                                type="submit">ارسال دیدگاه
-                                                        </button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-{% else %}
-<p>nist</p>
-{% endif %}
-{% endblock %}

@@ -14,10 +14,12 @@ class PostInline(admin.TabularInline):
 
 class CommentAdmin(admin.ModelAdmin):
     fieldsets = (
-        (None, {'fields': ('post',)}),
+        (None, {'fields': ('user','post')}),
         ("جزئیات نظر", {'fields': ('text', 'verification', 'date')}),
     )
     # inlines = [PostInline]
+    readonly_fields = ['user']
+
 
 
 class CommentInline(admin.StackedInline):
