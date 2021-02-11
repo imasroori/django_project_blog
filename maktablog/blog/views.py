@@ -6,8 +6,8 @@ from django.views import generic
 from .models import Post, MyModel, UserInfo, Category
 
 
-def index(request):
-    return render(request, 'blog/index.html')
+# def index(request):
+#     return render(request, 'blog/index.html')
 
 
 class ShowAllCategories(generic.ListView):
@@ -20,15 +20,10 @@ class ShowAllCategories(generic.ListView):
 
 
 class PostsinCategory(generic.DetailView):
-    template_name = 'blog/all_posts_in_category.html'
     pk_url_kwarg = 'id'
-    model = Post
-    context_object_name = 'posts_in_cat'
-
-    def get_context_data(self, **kwargs):
-        context = super(PostsinCategory, self).get_context_data(**kwargs)
-        context['posts_in_cat'] = Post.objects.all().filter(category='pk_url_kwarg')
-        return context
+    template_name = 'blog/all_posts_in_category.html'
+    model = Category
+    context_object_name = 'post_in_category'
 
 
 class IndexView(generic.ListView):
@@ -71,16 +66,16 @@ class ShowPost(generic.DetailView):
     template_name = 'blog/show_one_post.html'
 
 
-class CategoryPost(generic.DetailView):
-    pk_url_kwarg = 'id'
-    template_name = 'blog/all_posts_in_category.html'
-    model = Category
-    context_object_name = 'post_in_category'
-
-    def get_context_data(self, **kwargs):
-        context = super(CategoryPost, self).get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()
-        return context
+# class CategoryPost(generic.DetailView):
+#     pk_url_kwarg = 'id'
+#     template_name = 'blog/all_posts_in_category.html'
+#     model = Category
+#     context_object_name = 'post_in_category'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(CategoryPost, self).get_context_data(**kwargs)
+#         context['categories'] = Category.objects.all()
+#         return context
 
 
 class ShowAllPosts(generic.ListView):

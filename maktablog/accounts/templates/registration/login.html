@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load bootstrap %}
 {% block content %}
-<div class="container w-50 p-2">
+<div class="container text-right w-25 p-2 mt-5" style="height:50vh">
 
     <form class="" action="{% url 'login' %}" method="POST">
         {% csrf_token %}
@@ -12,7 +12,10 @@
         {% else %}
         <input type="hidden" name="next" value="/blog/">
         {% endif %}
-        <button type="submit" class="btn btn-primary">ورود</button>
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary m-2">ورود</button>
+            <a type="button" href="{% url 'blog:register' %}" class="btn btn-primary m-2">ثبت نام</a>
+        </div>
 
 
     </form>

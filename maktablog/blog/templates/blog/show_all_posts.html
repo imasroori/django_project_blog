@@ -5,31 +5,50 @@
 <div class="container text-right">
     <div class="row pt-5">
         <div class="col-2">
-            <div class="navi">
-                <h6>دسته بندی مطالب</h6>
 
-                <ul class="list-unstyled">
-                    {% for ii in categories %}
+            <div class="card border-secondary mb-3" style="max-width: 18rem;">
+                <div class="card-header">دسته بندی مطالب</div>
+                <div class="card-body text-secondary">
+                    <ul class="list-unstyled p-0">
+                        {% for ii in categories %}
 
-                    <li><a href="{% url 'blog:post_category' ii.id %}"> {{ii }}</a></li>
+                        <li><a href="{% url 'blog:posts_in_category' ii.id %}"> {{ii }}</a></li>
 
-                    {% endfor %}
-                </ul>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
+
         </div>
 
 
         <div class="col-9">
 
             {% for item in posts %}
-            <div class="card mb-3">
+            {% if item.activation and item.verification %}
+            <div class="card mb-4">
                 <a class="text-decoration-none" href="{% url 'blog:show_post' item.id %}">
                     <div class="row">
 
+
                         <div class="col-md-8">
+
+
                             <div class="card-body">
+
+
+                                <img style="width:50px" class="rounded-circle" src="/media/{{item.user.userinfo.image}}"
+                                     alt="555">
+
+                                <span class="">
+
+                                    {{ item.user.first_name}}
+                                    {{item.user.last_name }}
+
+                                </span>
+
                                 <h5 class="card-title text-right">{{item.title}}</h5>
-                                <p class="card-text text-right" style="height:150px;  white-space: nowrap;  overflow: hidden;
+                                <p class="card-text text-right" style="height:5rm;  white-space: nowrap;  overflow: hidden;
                     text-overflow: ellipsis;">{{item.text}}</p>
                                 <span class="card-text"><small
                                         class="text-muted">{{item.created_at|convert_to_jdate}} , </small></span>
@@ -44,6 +63,7 @@
                     </div>
                 </a>
             </div>
+            {% endif %}
             {% endfor %}
         </div>
 

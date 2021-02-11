@@ -3,11 +3,21 @@
 {% block content %}
 
 {% if user_profile %}
-<p>{{user_profile.first_name}}</p>
-<p>{{user_profile.last_name}}</p>
-<p>{{user_profile.email}}</p>
-<p>{{user_profile.image}}</p>
+<div class="container">
+    <div class="row p-4 m-4">
 
+        <div>
+
+            <img style="width:100px" class="rounded-circle" src="/media/{{user_profile.userinfo.image}}">
+        </div>
+        <div class="text-right mr-5 pr-5">
+            <p>نام: {{user_profile.first_name}}</p>
+            <p>نام خانوادگی: {{user_profile.last_name}}</p>
+            <p>پست الکترونیکی: {{user_profile.email}}</p>
+        </div>
+        <button class="btn btn-like"></button>
+    </div>
+</div>
 {% else %}
 <p>nist</p>
 {% endif %}

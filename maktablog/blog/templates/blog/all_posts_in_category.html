@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load custom_tags %}
 {% block content %}
-{% if posts_in_cat %}
+{% if post_in_category %}
 <div class="container text-right">
     <div class="row pt-5">
 
@@ -23,7 +23,8 @@
 
         <div class="col-9">
 
-            {% for item in posts_in_cat %}
+            {% for item in post_in_category.post_set.all %}
+            {% if item.activation and item.verification %}
             <div class="card mb-3">
                 <a class="text-decoration-none" href="{% url 'blog:show_post' item.id %}">
                     <div class="row">
@@ -46,6 +47,7 @@
                     </div>
                 </a>
             </div>
+            {% endif %}
             {% endfor %}
         </div>
 

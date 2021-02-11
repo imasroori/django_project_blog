@@ -12,6 +12,7 @@ class PostInline(admin.TabularInline):
     model = Post
 
 
+
 class CommentAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ('user','post')}),
@@ -35,7 +36,7 @@ class PostAdmin(admin.ModelAdmin):
     )
     readonly_fields = ('created_at','updated_at')
     inlines = [LabelPostInline]
-
+    list_display = ['title','activation','verification']
 
 admin.site.register(UserInfo)
 admin.site.register(Post, PostAdmin)
