@@ -43,7 +43,7 @@
 
                 <li class="m-2">
                     <a class="d-inline p-2 h3 rounded text-decoration-none"
-                       style="color:#006e2c; background:#ccf1db;a:hover{" href=""> {{item.label.label_name}} </a>
+                       style="color:#006e2c; background:#ccf1db;" href="{% url 'blog:posts_in_label' item.label.id %}"> {{item.label.label_name}} </a>
                 </li>
                 {% endfor %}
             </ul>
@@ -64,20 +64,20 @@
         </div>
 
 
-        <div class="container">
-            <div class="text-right">
-                <div class="">نظرات کاربران</div>
+        <div class="container border-top">
+            <div class="text-right m-3">
+                <span class="bg-secondary">نظرات کاربران</span>
                 <div class="section-body">
                     <div data-action="modal" class="responses-editor card-cm">
                         <div class="responses-editor-inner">
-                            <div class="responses-header">
-                                <div class="user--avatar">
+                            <div class="row justify-content-around responses-header">
+                                <div class="col-2 user--avatar">
                                     <img style="width:50px" class="rounded-circle"
-                                         src="https://virgool.io/images/default-avatar.jpg" alt="">
+                                         src="/media/{{post_detail.user.userinfo.image}}" alt="">
                                 </div>
-                                <span class="user--name" data-placeholder="نظر خود را درباره این پست بنویسید"></span>
+                                <span class="col-9 user--name border" data-placeholder="نظر خود را درباره این پست بنویسید">dddd</span>
                             </div>
-                            <div class="responses-text">
+                            <div class="mt-3 responses-text">
                                 <form id="commentsFormPost" method="POST"
                                       action="">
 

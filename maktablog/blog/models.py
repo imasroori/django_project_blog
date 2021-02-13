@@ -12,6 +12,10 @@ class UserInfo(models.Model):
     def __str__(self):
         return self.user.first_name
 
+    class Meta:
+        verbose_name = "پروفایل کاربری"
+        verbose_name_plural = "پروفایل کاربران"
+
 
 class MyModel(models.Model):
     content = HTMLField()
@@ -42,12 +46,20 @@ class Category(models.Model):
     def __str__(self):
         return self.category_name
 
+    class Meta:
+        verbose_name = "دسته بندی"
+        verbose_name_plural = "دسته بندی ها"
+
 
 class Label(models.Model):
     label_name = models.CharField('برچسب', max_length=30)
 
     def __str__(self):
         return self.label_name
+
+    class Meta:
+        verbose_name = "برچسب"
+        verbose_name_plural = "برچسب ها"
 
 
 class Post(Text):
@@ -70,6 +82,10 @@ class Post(Text):
     def __str__(self):
         return self.text
 
+    class Meta:
+        verbose_name = "پست"
+        verbose_name_plural = "پست ها"
+
 
 class Comment(Text):
     # text = models.TextField('متن نظر')
@@ -83,10 +99,18 @@ class Comment(Text):
     def __str__(self):
         return self.text
 
+    class Meta:
+        verbose_name = "نظر"
+        verbose_name_plural = "نظرات"
+
 
 class LabelPost(models.Model):
-    post = models.ForeignKey(Post, verbose_name='پست', on_delete=models.CASCADE,related_name='post')
+    post = models.ForeignKey(Post, verbose_name='پست', on_delete=models.CASCADE, related_name='post')
     label = models.ForeignKey(Label, verbose_name='برچسب', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.post.text
+
+    class Meta:
+        verbose_name = "برچسب-پست"
+        verbose_name_plural = "برچسب های پست"

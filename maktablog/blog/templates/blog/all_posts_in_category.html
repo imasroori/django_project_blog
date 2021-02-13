@@ -5,20 +5,36 @@
 <div class="container text-right">
     <div class="row pt-5">
 
-        <div class="col-2">
-            <div class="navi">
-                <h6>دسته بندی مطالب</h6>
+        <div class="col-3">
 
-                <ul class="list-unstyled">
-                    {% for ii in categories %}
 
-                    <li><a href="{% url 'blog:post_category' ii.id %}"> {{ii }}</a></li>
+            <div class="card border-secondary mb-3" style="max-width: 18rem;">
+                <div class="card-header">دسته بندی مطالب</div>
+                <div class="card-body text-secondary">
+                    <ul class="list-unstyled p-0">
 
-                    {% endfor %}
-                </ul>
+                        {% for c in categories %}
+
+                        {% if c.category %}
+                        {% if not c.category.category %}
+                        <ul class="list-unstyled pr-3">
+                            <li><a href="{% url 'blog:posts_in_category' c.id %}"> {{c }}</a></li>
+                        </ul>
+                        {% else %}
+                        <ul class="list-unstyled pr-5">
+                            <li><a href="{% url 'blog:posts_in_category' c.id %}"> {{c }}</a></li>
+                        </ul>
+                        {% endif %}
+
+                        {% else %}
+                        <li><a href="{% url 'blog:posts_in_category' c.id %}"> {{c }}</a></li>
+                        {% endif %}
+
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
         </div>
-
 
 
         <div class="col-9">

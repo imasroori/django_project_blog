@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import generic
 
-from .models import Post, MyModel, UserInfo, Category
+from .models import Post, MyModel, UserInfo, Category, Label
 
 
 # def index(request):
@@ -19,11 +19,28 @@ class ShowAllCategories(generic.ListView):
         return Category.objects.all()
 
 
+class PostsinLabel(generic.DetailView):
+    pk_url_kwarg = 'id'
+    template_name = 'blog/all_posts_in_label.html'
+    model = Label
+    context_object_name = 'post_in_label'
+
+    def get_context_data(self, **kwargs):
+        context = super(PostsinLabel, self).get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
+
+
 class PostsinCategory(generic.DetailView):
     pk_url_kwarg = 'id'
     template_name = 'blog/all_posts_in_category.html'
     model = Category
     context_object_name = 'post_in_category'
+
+    def get_context_data(self, **kwargs):
+        context = super(PostsinCategory, self).get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
 
 class IndexView(generic.ListView):
@@ -97,3 +114,19 @@ class Profile(generic.DetailView):
     pk_url_kwarg = 'id'
     context_object_name = 'user_profile'
     template_name = 'blog/profile.html'
+
+
+class PopularPosts(generic.ListView):
+    template_name = 'blog/show_all_posts.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        return Post.objects.all().filter(title__contains='پایتون')
+
+
+class NewestPosts(generic.ListView):
+    template_name = 'blog/show_all_posts.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        return Post.objects.all().filter(title__contains='برف')
