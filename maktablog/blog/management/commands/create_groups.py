@@ -18,18 +18,20 @@ PERMISSION_GROUPS = {
 
     'ساده': {'post': ['view'],
              'comment': ['add', 'view'],
-             'like': ['add', 'view']},
+             },
 
-    'ویراستار': {'post': ['view', 'change'],
+    'ویراستار': {'post': ['view', 'change', 'add', 'verify', 'unverify'],
+                 'label': ['view', 'change', 'add', 'delete'],
+                 'label post': ['view', 'change', 'add', 'delete'],
                  'comment': ['add', 'view', 'change'],
-                 'like': ['add', 'view']},
+                 },
     'نویسنده': {'post': ['view', 'change', 'add', 'delete'],
+                'label': ['view', 'change', 'add', 'delete'],
+                'label post': ['view', 'change', 'add', 'delete'],
                 'comment': ['add', 'view', 'change'],
-                'like': ['add', 'view']},
+                },
 
 }
-
-MODELS = ['post', 'comment', 'like']
 
 
 class Command(BaseCommand):

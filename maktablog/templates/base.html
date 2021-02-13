@@ -15,7 +15,7 @@
 </head>
 
 <body class=" bg-light" dir="rtl">
-<div class="row p-4 justify-content-between bg-warning pl-5 pr-5 mb-0">
+<div class="row p-4 justify-content-between bg-warning pl-5 pr-5 mb-0" id="header-site">
     {% block header %}
     <div class="">
         <a class="text-decoration-none h2" href="{% url 'blog:index' %}">
@@ -29,7 +29,7 @@
         <div class="input-group">
             <div class="form-outline">
 
-                <input type="search" id="form1" class="form-control" width="100"
+                <input type="search" id="form1" class="form-control form-control-lg" width="100px"
                        placeholder="عبارت مورد نظر را جستجو کنید ..."/>
 
             </div>
@@ -85,11 +85,35 @@
 
         </ul>
         {% if user.is_authenticated %}
-        <ul class="navbar-nav navbar-right">
-            <li class="nav-item">
-                <a class="nav-link h5" href="\admin">مدیریت</a>
-            </li>
-        </ul>
+
+        <div>
+
+            <div class="dropdown show">
+                <a class="btn btn-secondary dropdown-toggle text-right" href="#" role="button" id="dropdownMenuLink"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                    {% if user.userinfo.image %}
+                    <img style="width:35px" class="rounded-circle" src="/media/{{user.userinfo.image}}">
+                    {% else %}
+                    <img style="width:35px" class="rounded-circle" src="/media/images/default-avatar.jpg">
+                    {% endif %}
+
+                    پروفایل کاربری
+                </a>
+
+                <div class="dropdown-menu text-right" aria-labelledby="dropdownMenuLink">
+                    {% if perms.blog.add_post %}
+                    <a class="dropdown-item" href="\admin">پنل مدیریت</a>
+
+                    {% endif %}
+                    <a class="dropdown-item" href="{% url 'blog:profile' user.id %}">ویرایش اطلاعات</a>
+
+                    <a class="dropdown-item" href="{% url 'logout' %}?next={{request.path}}">خروج</a>
+                </div>
+            </div>
+
+        </div>
+
         {% endif %}
     </div>
     {% endblock %}
@@ -120,35 +144,42 @@
         {% endblock %}
     </div>
 
-    <div id="content">
+    <div class="row" id="content">
+
+
         {% block content %}{% endblock %}
 
-        <div id="fixed-social" dir="ltr">
-            <div>
-                <a href="#" class="fixed-facebook" target="_blank"><i class="fa fa-facebook"></i> <span>Facebook</span></a>
-            </div>
-            <div>
-                <a href="#" class="fixed-twitter" target="_blank"><i class="fa fa-twitter"></i> <span>Twitter</span></a>
-            </div>
-            <div>
-                <a href="#" class="fixed-gplus" target="_blank"><i class="fa fa-google"></i> <span>Google+</span></a>
-            </div>
-            <div>
-                <a href="#" class="fixed-linkedin" target="_blank"><i class="fa fa-linkedin"></i> <span>LinkedIn</span></a>
-            </div>
-            <div>
-                <a href="#" class="fixed-instagrem" target="_blank"><i class="fa fa-instagram"></i>
-                    <span>Instagram</span></a>
-            </div>
-            <div>
-                <a href="#" class="fixed-tumblr" target="_blank"><i class="fa fa-tumblr"></i> <span>Tumblr</span></a>
-            </div>
-        </div>
 
+        <span class="position-relative" id="fixed-social" dir="ltr">
+                <span>
+                    <a href="#" class="fixed-facebook" target="_blank"><i class="fa fa-facebook"></i>
+                        <span>Facebook</span></a>
+                </span>
+                <span>
+                    <a href="#" class="fixed-twitter" target="_blank"><i class="fa fa-twitter"></i> <span>Twitter</span></a>
+                </span>
+                <span>
+                    <a href="#" class="fixed-gplus" target="_blank"><i class="fa fa-google"></i>
+                        <span>Google+</span></a>
+                </span>
+                <span>
+                    <a href="#" class="fixed-linkedin" target="_blank"><i class="fa fa-linkedin"></i>
+                        <span>LinkedIn</span></a>
+                </span>
+                <span>
+                    <a href="#" class="fixed-instagrem" target="_blank"><i class="fa fa-instagram"></i>
+                        <span>Instagram</span></a>
+                </span>
+                <span>
+                    <a href="#" class="fixed-tumblr" target="_blank"><i class="fa fa-tumblr"></i>
+                        <span>Tumblr</span></a>
+                </span>
+            </span>
     </div>
 
 
 </div>
+
 
 <div class="text-center p-3 mt-5" style="background-color: rgba(0, 0, 0, 0.2)">
     {% block footer %}
@@ -158,22 +189,8 @@
 
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
-<script src="{% static 'js/sidebar.js' %}"
+<script src="{% static 'js/sidebar.js' %}"></script>
 <script src="{% static 'js/search_button.js' %}"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 </body>

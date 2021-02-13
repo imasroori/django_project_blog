@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -69,7 +70,7 @@ def register(request):
         user = User.objects.create_user(password=pass_word, username=user_name, first_name=f_name, last_name=l_name)
 
         user.is_staff = True
-        userinfo = UserInfo.objects.create(user=user, phone_number=phone, alias_name=alias_name, image=img)
+        userinfo = UserInfo.objects.create(user=user, phone_number=phone, alias_name=alias_name, image="images/" + img)
         userinfo.save()
         print(user.userinfo.image)
         user.save()
@@ -109,7 +110,9 @@ class ShowAllPosts(generic.ListView):
         return context
 
 
-class Profile(generic.DetailView):
+class Profile(LoginRequiredMixin, generic.DetailView):
+    login_url = '/login/'
+
     model = User
     pk_url_kwarg = 'id'
     context_object_name = 'user_profile'

@@ -13,7 +13,7 @@ class UserInfo(models.Model):
         return self.user.first_name
 
     class Meta:
-        verbose_name = "پروفایل کاربری"
+        # verbose_name = "پروفایل کاربری"
         verbose_name_plural = "پروفایل کاربران"
 
 
@@ -47,7 +47,7 @@ class Category(models.Model):
         return self.category_name
 
     class Meta:
-        verbose_name = "دسته بندی"
+        # verbose_name = "دسته بندی"
         verbose_name_plural = "دسته بندی ها"
 
 
@@ -58,7 +58,7 @@ class Label(models.Model):
         return self.label_name
 
     class Meta:
-        verbose_name = "برچسب"
+        # verbose_name = "برچسب"
         verbose_name_plural = "برچسب ها"
 
 
@@ -83,8 +83,12 @@ class Post(Text):
         return self.text
 
     class Meta:
-        verbose_name = "پست"
+        # verbose_name = "پست"
         verbose_name_plural = "پست ها"
+        permissions = (
+            ("can_verify", "Can verify post"),
+            ("can_unverify", "Can unverify post"),
+        )
 
 
 class Comment(Text):
@@ -100,7 +104,7 @@ class Comment(Text):
         return self.text
 
     class Meta:
-        verbose_name = "نظر"
+        # verbose_name = "نظر"
         verbose_name_plural = "نظرات"
 
 
@@ -112,5 +116,5 @@ class LabelPost(models.Model):
         return self.post.text
 
     class Meta:
-        verbose_name = "برچسب-پست"
+        # verbose_name = "برچسب-پست"
         verbose_name_plural = "برچسب های پست"
