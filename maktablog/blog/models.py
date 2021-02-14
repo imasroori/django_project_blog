@@ -1,13 +1,28 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from tinymce.models import HTMLField
+
+from PIL import Image
 
 
 class UserInfo(models.Model):
+    first_name = models.CharField('نام', max_length=30, blank=True)
+    last_name = models.CharField('نام خانوادگی', max_length=30, blank=True)
     alias_name = models.CharField('نام مستعار', max_length=30)
     phone_number = models.CharField('شماره تلفن', max_length=11)
     image = models.ImageField('عکس پروفایل', upload_to='images/')
     user = models.OneToOneField(User, verbose_name='کاربر', on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        img = Image.open(self.image.path)
+        if img.mode in ("RGBA", "P"): img = img.convert("RGB")
+        if img.height > 50 or img.width > 50:
+            output_size = (50, 50)
+            img.thumbnail(output_size)
+            img.save(self.image.path)
 
     def __str__(self):
         return self.user.first_name
@@ -15,6 +30,13 @@ class UserInfo(models.Model):
     class Meta:
         # verbose_name = "پروفایل کاربری"
         verbose_name_plural = "پروفایل کاربران"
+
+
+@receiver(post_save, sender=User)
+def update_userinfo_signal(sender, instance, created, **kwargs):
+    if created:
+        UserInfo.objects.create(user=instance)
+    instance.userinfo.save()
 
 
 class MyModel(models.Model):

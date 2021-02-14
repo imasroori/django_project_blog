@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+{% block content %}
+<div class="container text-right w-50 p-2 mt-5">
+
+    {% if signup_form %}
+    <h2 class="text-center">فرم ثبت نام در سایت</h2>
+
+    <form action="{% url 'blog:signup' %}" method="POST">
+        {% csrf_token %}
+        {% for field in signup_form %}
+        <p>
+            {{ field.label_tag }}<br>
+            {{ field }}
+            {% if field.help_text %}
+            <small style="color: grey">{{ field.help_text }}</small>
+            {% endif %}
+            {% for error in field.errors %}
+        <p style="color: red">{{ error }}</p>
+        {% endfor %}
+        </p>
+        {% endfor %}
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary">ثبت نام</button>
+        </div>
+
+    </form>
+    {% else %}
+    <p> Form Nist</p>
+    {% endif %}
+
+</div>
+{% endblock %}

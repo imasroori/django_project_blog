@@ -37,9 +37,9 @@
                 <button type="button" class="pt-0 btn btn-success">
                     <i class="fa fa-search"></i>
                 </button>
-<!--                <button type="button" class="pt-0 btn btn-success">-->
-<!--                    جستجوی پیشرفته-->
-<!--                </button>-->
+                <!--                <button type="button" class="pt-0 btn btn-success">-->
+                <!--                    جستجوی پیشرفته-->
+                <!--                </button>-->
             </div>
         </div>
     </div>
@@ -51,6 +51,9 @@
         {% else %}
         <div class="mr-1 ml-1">
             <a class="btn btn-info" style="color:rgb(245,221,93)" href="{% url 'blog:register' %}">ثبت نام</a>
+        </div>
+        <div class="mr-1 ml-1">
+            <a class="btn btn-info" style="color:rgb(245,221,93)" href="{% url 'blog:signup' %}">signup</a>
         </div>
         <div class="mr-1 ml-1">
             <a class="btn btn-info" style="color:rgb(245,221,93)" href="{% url 'login' %}">ورود </a>
@@ -111,7 +114,7 @@
                     <a class="dropdown-item" href="\admin">پنل مدیریت</a>
 
                     {% endif %}
-                    <a class="dropdown-item" href="{% url 'blog:profile' user.id %}">ویرایش اطلاعات</a>
+                    <a class="dropdown-item" href="{% url 'blog:profile2' %}">ویرایش اطلاعات</a>
 
                     <a class="dropdown-item" href="{% url 'logout' %}?next={{request.path}}">خروج</a>
                 </div>
@@ -148,7 +151,13 @@
 
         {% endblock %}
     </div>
-
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
     <div class="row" id="content">
 
 
