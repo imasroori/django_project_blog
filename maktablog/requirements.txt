@@ -3,3 +3,4 @@ django-bootstrap-form
 Pillow
 Khayyam
 django-tinymce
+djangorestframework
