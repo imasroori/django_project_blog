@@ -111,7 +111,7 @@ class ShowAllPosts(generic.ListView):
 
 
 class Profile(LoginRequiredMixin, generic.DetailView):
-    login_url = '/login/'
+    # login_url = '/login/'
 
     model = User
     pk_url_kwarg = 'id'

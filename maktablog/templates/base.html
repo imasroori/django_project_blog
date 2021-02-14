@@ -15,10 +15,10 @@
 </head>
 
 <body class=" bg-light" dir="rtl">
-<div class="row p-4 justify-content-between bg-warning pl-5 pr-5 mb-0" id="header-site">
+<div class="row p-4 justify-content-between pl-5 pr-5 mb-0" style="background-color:rgb(65,118,144)" id="header-site">
     {% block header %}
-    <div class="">
-        <a class="text-decoration-none h2" href="{% url 'blog:index' %}">
+    <div class="mb-0 mt-0 mr-4">
+        <a class="text-decoration-none h2" style="color:rgb(245,221,93)" href="{% url 'blog:index' %}">
 
             وبلاگ سخن
 
@@ -33,9 +33,14 @@
                        placeholder="عبارت مورد نظر را جستجو کنید ..."/>
 
             </div>
-            <button type="button" class="pt-0 btn btn-primary">
-                <i class="fa fa-search"></i>
-            </button>
+            <div class="d-flex justify-content-between">
+                <button type="button" class="pt-0 btn btn-success">
+                    <i class="fa fa-search"></i>
+                </button>
+<!--                <button type="button" class="pt-0 btn btn-success">-->
+<!--                    جستجوی پیشرفته-->
+<!--                </button>-->
+            </div>
         </div>
     </div>
     <div class="d-flex justify-content-between align-items-center">
@@ -45,10 +50,10 @@
         </div>
         {% else %}
         <div class="mr-1 ml-1">
-            <a class="btn btn-info" href="{% url 'blog:register' %}">ثبت نام</a>
+            <a class="btn btn-info" style="color:rgb(245,221,93)" href="{% url 'blog:register' %}">ثبت نام</a>
         </div>
         <div class="mr-1 ml-1">
-            <a class="btn btn-info" href="{% url 'login' %}">ورود </a>
+            <a class="btn btn-info" style="color:rgb(245,221,93)" href="{% url 'login' %}">ورود </a>
         </div>
         {% endif %}
     </div>
@@ -56,7 +61,7 @@
     {% endblock %}
 </div>
 
-<nav class="navbar navbar-inverse navbar-expand-sm sticky-top bg-dark p2">
+<nav class="navbar navbar-inverse bg-dark navbar-expand-sm sticky-top p2">
     {% block navbar %}
     <div class="container-fluid p-0">
         <ul class="navbar-nav">
@@ -89,7 +94,7 @@
         <div>
 
             <div class="dropdown show">
-                <a class="btn btn-secondary dropdown-toggle text-right" href="#" role="button" id="dropdownMenuLink"
+                <a class="dropdown-toggle text-right text-decoration-none" href="#" role="button" id="dropdownMenuLink"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
                     {% if user.userinfo.image %}
@@ -134,7 +139,7 @@
             <a href="#">Clients</a>
             <a href="#">Contact</a>
         </div>
-        <div class="row justify-content-rigt">
+        <div class="row justify-content-right">
 
             <button class="openbtn" onclick="openNav()"><i class="fa fa-chevron-circle-left"
                                                            style="font-size:48px;color:red"></i>
@@ -149,32 +154,6 @@
 
         {% block content %}{% endblock %}
 
-
-        <span class="position-relative" id="fixed-social" dir="ltr">
-                <span>
-                    <a href="#" class="fixed-facebook" target="_blank"><i class="fa fa-facebook"></i>
-                        <span>Facebook</span></a>
-                </span>
-                <span>
-                    <a href="#" class="fixed-twitter" target="_blank"><i class="fa fa-twitter"></i> <span>Twitter</span></a>
-                </span>
-                <span>
-                    <a href="#" class="fixed-gplus" target="_blank"><i class="fa fa-google"></i>
-                        <span>Google+</span></a>
-                </span>
-                <span>
-                    <a href="#" class="fixed-linkedin" target="_blank"><i class="fa fa-linkedin"></i>
-                        <span>LinkedIn</span></a>
-                </span>
-                <span>
-                    <a href="#" class="fixed-instagrem" target="_blank"><i class="fa fa-instagram"></i>
-                        <span>Instagram</span></a>
-                </span>
-                <span>
-                    <a href="#" class="fixed-tumblr" target="_blank"><i class="fa fa-tumblr"></i>
-                        <span>Tumblr</span></a>
-                </span>
-            </span>
     </div>
 
 

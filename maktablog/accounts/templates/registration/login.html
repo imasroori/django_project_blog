@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load bootstrap %}
 {% block content %}
-<div class="container text-right w-25 mt-4" style="height:50vh">
+<div class="container text-right w-25 mt-2" style="height:50vh">
 
     <form class="" action="{% url 'login' %}" method="POST">
         {% csrf_token %}
