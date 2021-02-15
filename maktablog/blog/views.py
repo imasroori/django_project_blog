@@ -127,8 +127,8 @@ def signup(request):
             user.refresh_from_db()
             userinfo.refresh_from_db()
 
-            user.userinfo.first_name = signup_form.cleaned_data.get('first_name')
-            user.userinfo.last_name = signup_form.cleaned_data.get('last_name')
+            # user.userinfo.first_name = signup_form.cleaned_data.get('first_name')
+            # user.userinfo.last_name = signup_form.cleaned_data.get('last_name')
             user.userinfo.alias_name = signup_form.cleaned_data.get('alias_name')
             user.userinfo.phone_number = signup_form.cleaned_data.get('phone_number')
             user.userinfo.image = signup_form.cleaned_data['image']
@@ -137,8 +137,8 @@ def signup(request):
             user.last_name = signup_form.cleaned_data.get('last_name')
             user.email = signup_form.cleaned_data.get('email')
 
-            user.userinfo.email = signup_form.cleaned_data.get('email')
-            # userinfo.save()
+            # user.userinfo.email = signup_form.cleaned_data.get('email')
+            userinfo.save()
             user.save()
 
             username = signup_form.cleaned_data.get('username')

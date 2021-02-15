@@ -7,8 +7,23 @@ from django.core.mail import message
 from .models import Post, Comment, Label, Category, UserInfo, LabelPost, MyModel
 
 
-# class LabelPostAdmin(admin.TabularInline):
-#     list_display = ['label']
+class UserInfoInline(admin.StackedInline):
+    model = UserInfo
+    can_delete = False
+    # show_change_link = True
+
+
+class CustomUserAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ("اطلاعات کاربری", {'fields': (
+            'username', 'password', 'email', 'first_name', 'last_name', 'is_active', 'is_staff', 'is_superuser',)}),
+        ("گروه کاربری و اجازه ها", {'fields': ('groups', 'user_permissions')}),
+
+    )
+
+    list_display = ['username', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser', ]
+    inlines = [UserInfoInline]
+    filter_horizontal = ['groups', 'user_permissions']
 
 
 class LabelPostInline(admin.TabularInline):
@@ -45,13 +60,13 @@ class PostAdmin(admin.ModelAdmin):
     inlines = [LabelPostInline]
 
     def num_likes(self, obj):
-        return 2
+        return obj.likes.count()
 
     def num_dislikes(self, obj):
-        return 2
+        return obj.dislikes.count()
 
     def num_comments(self, obj):
-        return 1
+        return obj.comment_set.count()
 
     num_likes.short_description = 'تعداد پسندیدن'
     num_dislikes.short_description = 'تعداد نپسندیدن'
@@ -120,11 +135,12 @@ class PostAdmin(admin.ModelAdmin):
         return actions
 
 
-admin.site.register(UserInfo)
+admin.site.unregister(User)
+admin.site.register(User, CustomUserAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Label)
 admin.site.register(Category)
-admin.site.register(LabelPost)
+# admin.site.register(LabelPost)
 
-admin.site.register(MyModel)
+# admin.site.register(MyModel)

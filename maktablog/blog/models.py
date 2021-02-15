@@ -8,8 +8,8 @@ from PIL import Image
 
 
 class UserInfo(models.Model):
-    first_name = models.CharField('نام', max_length=30, blank=True)
-    last_name = models.CharField('نام خانوادگی', max_length=30, blank=True)
+    # first_name = models.CharField('نام', max_length=30, blank=True)
+    # last_name = models.CharField('نام خانوادگی', max_length=30, blank=True)
     alias_name = models.CharField('نام مستعار', max_length=30)
     phone_number = models.CharField('شماره تلفن', max_length=11)
     image = models.ImageField('عکس پروفایل', upload_to='images/', default="images/default-avatar.jpg")
