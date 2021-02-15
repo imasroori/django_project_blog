@@ -8,13 +8,14 @@ from .models import UserInfo
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(label='نام', max_length=100, help_text='نام')
     last_name = forms.CharField(label='نام خانوادگی', max_length=100, help_text='نام خانوادگی')
+    alias_name = forms.CharField(label='نام مستعار', max_length=100, help_text='نام خانوادگی')
     email = forms.EmailField(label='ایمیل', max_length=150, help_text='ایمیل')
     phone_number = forms.CharField(label='شماره تلفن', max_length=20, required=False)
-    image = forms.ImageField(required=False)
+    image = forms.ImageField(label="عکس پروفایل", required=False)
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'image', 'phone_number',
+        fields = ('username', 'first_name', 'last_name', 'alias_name','image', 'phone_number',
                   'email', 'password1', 'password2',)
 
 

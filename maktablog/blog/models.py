@@ -12,7 +12,7 @@ class UserInfo(models.Model):
     last_name = models.CharField('نام خانوادگی', max_length=30, blank=True)
     alias_name = models.CharField('نام مستعار', max_length=30)
     phone_number = models.CharField('شماره تلفن', max_length=11)
-    image = models.ImageField('عکس پروفایل', upload_to='images/')
+    image = models.ImageField('عکس پروفایل', upload_to='images/', default="images/default-avatar.jpg")
     user = models.OneToOneField(User, verbose_name='کاربر', on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
@@ -23,6 +23,11 @@ class UserInfo(models.Model):
             output_size = (50, 50)
             img.thumbnail(output_size)
             img.save(self.image.path)
+
+    @property
+    def image_url(self):
+        if self.image and hasattr(self.image, 'url'):
+            return self.image.url
 
     def __str__(self):
         return self.user.first_name

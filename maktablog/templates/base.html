@@ -50,10 +50,7 @@
         </div>
         {% else %}
         <div class="mr-1 ml-1">
-            <a class="btn btn-info" style="color:rgb(245,221,93)" href="{% url 'blog:register' %}">ثبت نام</a>
-        </div>
-        <div class="mr-1 ml-1">
-            <a class="btn btn-info" style="color:rgb(245,221,93)" href="{% url 'blog:signup' %}">signup</a>
+            <a class="btn btn-info" style="color:rgb(245,221,93)" href="{% url 'blog:signup' %}">ثبت نام</a>
         </div>
         <div class="mr-1 ml-1">
             <a class="btn btn-info" style="color:rgb(245,221,93)" href="{% url 'login' %}">ورود </a>
@@ -70,11 +67,11 @@
         <ul class="navbar-nav">
             {% if user.is_authenticated %}
             <li class="nav-item">
-                <a class="nav-link h5" href="{% url 'blog:profile' user.id %}">ثبت نام</a>
+                <a class="nav-link h5" href="{% url 'blog:profile' %}">ثبت نام</a>
             </li>
             {% else %}
             <li class="nav-item">
-                <a class="nav-link h5" href="{% url 'blog:register' %}">ثبت نام</a>
+                <a class="nav-link h5" href="{% url 'blog:signup' %}">ثبت نام</a>
             </li>
             {% endif %}
             <li class="nav-item">
@@ -114,7 +111,7 @@
                     <a class="dropdown-item" href="\admin">پنل مدیریت</a>
 
                     {% endif %}
-                    <a class="dropdown-item" href="{% url 'blog:profile2' %}">ویرایش اطلاعات</a>
+                    <a class="dropdown-item" href="{% url 'blog:profile' %}">ویرایش اطلاعات</a>
 
                     <a class="dropdown-item" href="{% url 'logout' %}?next={{request.path}}">خروج</a>
                 </div>

@@ -62,32 +62,11 @@ class IndexView(generic.ListView):
         return context
 
 
-def register(request):
-    if request.POST:
-        f_name = request.POST['first_name']
-        l_name = request.POST['last_name']
-        alias_name = request.POST['alias_name']
-        user_name = request.POST['username']
-        pass_word = request.POST['password']
-        phone = request.POST['phone_number']
-        img = request.POST.get('image_profile')
-        print("dfdfdfdfdf", img)
-        user = User.objects.create_user(password=pass_word, username=user_name, first_name=f_name, last_name=l_name)
-
-        user.is_staff = True
-        userinfo = UserInfo.objects.create(user=user, phone_number=phone, alias_name=alias_name, image="images/" + img)
-        userinfo.save()
-        print(user.userinfo.image)
-        user.save()
-    return HttpResponse(render(request, 'blog/register_form.html'))
-
-
 class ShowPost(generic.DetailView):
     pk_url_kwarg = 'id'
     model = Post
     context_object_name = 'post_detail'
     template_name = 'blog/show_one_post.html'
-
 
 
 class ShowAllPosts(generic.ListView):
@@ -104,17 +83,8 @@ class ShowAllPosts(generic.ListView):
         return context
 
 
-class Profile(LoginRequiredMixin, generic.DetailView):
-    # login_url = '/login/'
-
-    model = User
-    pk_url_kwarg = 'id'
-    context_object_name = 'user_profile'
-    template_name = 'blog/profile.html'
-
-
 @login_required
-def profile2(request):
+def profile(request):
     if request.method == 'POST':
         userinfo_form = UserInfoUpdateForm(request.POST, request.FILES, instance=request.user.userinfo)
         user_form = UserUpdateForm(request.POST, instance=request.user)
@@ -122,13 +92,13 @@ def profile2(request):
             user_form.save()
             userinfo_form.save()
             messages.success(request, 'اطلاعات حساب کاربری شما با موفقیت بروزرسانی شد')
-            return redirect('/blog/profile2')
+            return redirect('/blog/profile')
     else:
         userinfo_form = UserInfoUpdateForm(instance=request.user.userinfo)
         user_form = UserUpdateForm(instance=request.user)
 
     context = {'userinfo_form': userinfo_form, 'user_form': user_form}
-    return render(request, 'blog/profile2.html', context)
+    return render(request, 'blog/profile.html', context)
 
 
 class PopularPosts(generic.ListView):
@@ -149,14 +119,26 @@ class NewestPosts(generic.ListView):
 
 def signup(request):
     if request.POST:
-        signup_form = SignUpForm(request.POST)
+        signup_form = SignUpForm(request.POST, request.FILES)
         if signup_form.is_valid():
             user = signup_form.save()
+            userinfo = signup_form.save()
+
             user.refresh_from_db()
+            userinfo.refresh_from_db()
+
             user.userinfo.first_name = signup_form.cleaned_data.get('first_name')
             user.userinfo.last_name = signup_form.cleaned_data.get('last_name')
+            user.userinfo.alias_name = signup_form.cleaned_data.get('alias_name')
+            user.userinfo.phone_number = signup_form.cleaned_data.get('phone_number')
+            user.userinfo.image = signup_form.cleaned_data['image']
+
+            user.first_name = signup_form.cleaned_data.get('first_name')
+            user.last_name = signup_form.cleaned_data.get('last_name')
+            user.email = signup_form.cleaned_data.get('email')
 
             user.userinfo.email = signup_form.cleaned_data.get('email')
+            # userinfo.save()
             user.save()
 
             username = signup_form.cleaned_data.get('username')
