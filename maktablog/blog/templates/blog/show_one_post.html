@@ -77,33 +77,46 @@
                         <div class="responses-editor-inner">
 
                             <div class="mt-3">
-                                <div class="border text-muted p-1 rounded border-radius-3" id="box-type-comment"
+                                <div class="border text-muted p-1 rounded" id="box-type-comment"
                                      data-login="{% if user.is_authenticated %}loggedin{% else %}loggedout{% endif %}">
-                                    <img class="rounded-circle" src="/media/images/default-avatar.jpg">
-                                    <div class="d-inline-block">نظر خود را درباره این پست بنویسید ...</div>
+                                    {% if user.is_authenticated %}
+                                    <img class="rounded-circle"
+                                         src="/media/{{user.userinfo.image}}">
+                                    {% else %}
+                                    <img class="rounded-circle"
+                                         src="/media/images/default-avatar.jpg">
+                                    {% endif %}
+
+                                    <div class="d-inline-block">{% if user.is_authenticated %}
+                                        {{user.first_name}} {{user.last_name}}
+                                        {% else %}
+                                        نظر خود را درباره این پست
+
+                                        بنویسید ...
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="{% if user.is_authenticated %}d-block{% else %}d-none{% endif %}"
+                                         id="commentsFormPost">
+                                        <form id="commentForm"
+                                              data-post-id="{{post_detail.id}}"
+                                              method="POST">
+                                            {% csrf_token %}
+
+                                            <textarea id="commentBody" class="textarea" name="comment_body"
+
+                                                      style="overflow: hidden; overflow-wrap: break-word;width:100%; height: 100px;"
+                                                      placeholder="لطفا نظر خود را در این قسمت وارد کنید ..."></textarea>
 
 
-                                    <form class="d-none" id="commentsFormPost" method="POST"
-                                          action="">
-
-                                        <div class="responses-textArea">
-                                        <textarea id="commentBody" class="textarea"
-
-                                                  name="comment_body"
-
-                                                  style="overflow: hidden; overflow-wrap: break-word;width:100%; height: 100px;"
-                                                  placeholder="لطفا نظر خود را در این قسمت وارد کنید ..."></textarea>
+                                            <input name="" type="submit" class="btn bg-success btn-rounded btn-lg"
+                                                    id="send-comment" value="ارسال دیدگاه"
+                                                    data-post-id="{{post_detail.id}}">
 
 
-                                        </div>
-                                        <div class="responses-buttons d-flex justify-content-center">
-                                            <button class="btn bg-warning btn-main btn-rounded btn-lg block-end"
-                                                    type="submit" id="send-comment">
-                                                ارسال
-                                                دیدگاه
-                                            </button>
-                                        </div>
-                                    </form>
+
+                                        </form>
+                                    </div>
                                 </div>
 
                                 <!-- MODAL-->
@@ -140,17 +153,17 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="list_comments mt-4 mb-2">
-                                    <div class="m-3">لیست نظرات</div>
+                                <div class="mt-4 mb-2">
+                                    <div class="m-3" id="list_comments">لیست نظرات</div>
                                     {% if post_detail.comment_set.all %}
                                     {% for comment in post_detail.comment_set.all %}
                                     <div class="row justify-content-around" id="comment-item">
                                         <div class="col-2 user--avatar">
                                             <img style="width:50px" class="rounded-circle"
-                                                 src="/media/{{user.userinfo.image}}" alt="">
+                                                 src="/media/{{comment.user.userinfo.image}}" alt="">
                                         </div>
                                         <span class="col-9 user--name border"
-                                              data-placeholder="نظر خود را درباره این پست بنویسید">dddd</span>
+                                              data-placeholder="نظر خود را درباره این پست بنویسید">{{comment.text}}</span>
                                     </div>
                                     {% endfor %}
                                     {% else %}

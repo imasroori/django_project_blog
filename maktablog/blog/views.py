@@ -4,12 +4,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.views import generic
 
 from .forms import SignUpForm, UserUpdateForm, UserInfoUpdateForm
-from .models import Post, MyModel, UserInfo, Category, Label
+from .models import Post, MyModel, UserInfo, Category, Label, Comment
 
 
 # def index(request):
@@ -62,11 +62,42 @@ class IndexView(generic.ListView):
         return context
 
 
-class ShowPost(generic.DetailView):
-    pk_url_kwarg = 'id'
-    model = Post
-    context_object_name = 'post_detail'
-    template_name = 'blog/show_one_post.html'
+def showpost(request, id):
+    # post_detail = Post.objects.get(id=id)
+
+    if request.method == "POST":
+        user = User.objects.get(username=request.user)
+        post_id = id
+        comment_text = request.POST['comment_body']
+        post = Post.objects.all().filter(id=post_id)[0]
+        # print(post)
+        print(comment_text)
+        print(post_id)
+        print(user)
+
+        comment = Comment.objects.create(user=user, post=post, text=comment_text)
+
+        post_detail = Post.objects.get(id=id)
+        return render(request, 'blog/show_one_post.html', {'post_detail': post_detail})
+    post_detail = Post.objects.get(id=id)
+    return render(request, 'blog/show_one_post.html', {'post_detail': post_detail})
+
+
+# class ShowPost(generic.DetailView):
+#     pk_url_kwarg = 'id'
+#     model = Post
+#     context_object_name = 'post_detail'
+#     template_name = 'blog/show_one_post.html'
+#
+#     def post(self, request, *args, **kwargs):
+#         if not request.user.is_authenticated:
+#             return HttpResponseForbidden()
+#         self.object = self.get_object()
+#         form = self.get_form()
+#         if form.is_valid():
+#             return self.form_valid(form)
+#         else:
+#             return self.form_invalid(form)
 
 
 class ShowAllPosts(generic.ListView):
@@ -156,4 +187,3 @@ def signup(request):
     else:
         signup_form = SignUpForm()
         return render(request, 'blog/signup.html', {'signup_form': signup_form})
-

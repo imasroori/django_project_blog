@@ -121,7 +121,9 @@ class Post(Text):
 
 class Comment(Text):
     # text = models.TextField('متن نظر')
-    date = models.CharField('زمان انتشار', max_length=30)
+    date_pub = models.DateTimeField('زمان انتشار', max_length=30, auto_now=True)
+    # date_pub = models.DateTimeField('زمان بروزرسانی پست', max_length=30, auto_now=True)
+    # date_create = models.CharField('زمان ایجاد', max_length=30)
     verification = models.BooleanField('تایید کردن محتوای نظر', default=False)
     # user = models.ForeignKey(User, verbose_name='کاربر', on_delete=models.CASCADE)
     post = models.ForeignKey(Post, verbose_name='پست', on_delete=models.CASCADE)

@@ -4,6 +4,7 @@ btn_like = document.getElementById("like")
 btn_dislike = document.getElementById("dislike")
 star_post = document.getElementById("star-post")
 send_comment = document.getElementById("send-comment")
+commentForm = document.getElementById('commentForm')
 
 star_post.addEventListener("click", function(){
                                     if(this.getAttribute("data-login") == 'loggedout'){
@@ -39,7 +40,7 @@ star_post.addEventListener("click", function(){
                                                  });
 
 
-box_type_comment.addEventListener('click',function(event){
+box_type_comment.addEventListener('click',function(){
 
                                     if(this.getAttribute("data-login") == 'loggedout'){
 
@@ -47,9 +48,7 @@ box_type_comment.addEventListener('click',function(event){
                                     this.setAttribute("data-target","#myModal")
 
                                     }else{
-                                    var commentsFormPost = $('#commentsFormPost')
 
-                                    commentsFormPost.display = block
                                     }
                                     })
 
@@ -156,8 +155,3 @@ btn_dislike.addEventListener("click",function(){
 
 
 
-send_comment.addEventListener('click',function(){
-
-
-
-})

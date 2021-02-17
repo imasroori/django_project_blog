@@ -38,10 +38,10 @@ class PostInline(admin.TabularInline):
 class CommentAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ('user', 'post')}),
-        ("جزئیات نظر", {'fields': ('text', 'verification', 'date')}),
+        ("جزئیات نظر", {'fields': ('text', 'verification', 'date_pub')}),
     )
     # inlines = [PostInline]
-    readonly_fields = ['user']
+    readonly_fields = ['user', 'date_pub']
 
 
 class CommentInline(admin.StackedInline):
@@ -51,7 +51,7 @@ class CommentInline(admin.StackedInline):
 class PostAdmin(admin.ModelAdmin):
     fieldsets = (
         ("اطلاعات پست", {'fields': ('user', 'title', 'image', 'text',)}),
-        ("زمان و تاریخ", {'fields': ('likes','dislikes')}),
+        ("زمان و تاریخ", {'fields': ('likes', 'dislikes')}),
         ("وضعیت", {'fields': ('activation', 'verification')}),
         ("طبقه بندی و برچسب ها", {'fields': ('category',)}),
     )

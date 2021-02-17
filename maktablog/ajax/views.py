@@ -3,8 +3,9 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 # Create your views here.
-# from .blog.models import Post
+
 from blog.models import *
+from django.views.decorators.csrf import csrf_exempt
 
 
 def validate_username(request):
