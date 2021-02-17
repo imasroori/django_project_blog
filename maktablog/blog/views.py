@@ -76,7 +76,7 @@ def showpost(request, id):
         print(user)
 
         comment = Comment.objects.create(user=user, post=post, text=comment_text)
-
+        messages.add_message(request, messages.SUCCESS, 'پیام شما با موفقیت ثبت شد')
         post_detail = Post.objects.get(id=id)
         return render(request, 'blog/show_one_post.html', {'post_detail': post_detail})
     post_detail = Post.objects.get(id=id)
