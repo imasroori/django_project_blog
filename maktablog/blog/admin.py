@@ -51,7 +51,7 @@ class CommentInline(admin.StackedInline):
 class PostAdmin(admin.ModelAdmin):
     fieldsets = (
         ("اطلاعات پست", {'fields': ('user', 'title', 'image', 'text',)}),
-        # ("زمان و تاریخ", {'fields': ('created_at',)}),
+        ("زمان و تاریخ", {'fields': ('likes','dislikes')}),
         ("وضعیت", {'fields': ('activation', 'verification')}),
         ("طبقه بندی و برچسب ها", {'fields': ('category',)}),
     )
@@ -72,6 +72,7 @@ class PostAdmin(admin.ModelAdmin):
     num_dislikes.short_description = 'تعداد نپسندیدن'
     num_comments.short_description = 'تعداد نظرات'
     list_display = ['title', 'user', 'activation', 'verification', 'num_likes', 'num_dislikes', 'num_comments']
+    filter_horizontal = ['likes', 'dislikes']
 
     def make_activate_post(self, request, queryset):
         queryset.update(activation=True)
@@ -106,11 +107,11 @@ class PostAdmin(admin.ModelAdmin):
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
         disabled_fields = set()
-        if request.user.has_perm('blog.add_post') and not request.user.is_superuser:
+        if not request.user.has_perm('blog.can_verify'):
             form.base_fields['user'].initial = request.user
             disabled_fields = ('user', 'created_at', 'updated_at', 'verification')
 
-        if request.user.has_perm('blog.change_post') and not request.user.has_perm('blog.add_post'):
+        if request.user.has_perm('blog.can_verify'):
             disabled_fields = ('user', 'created_at', 'updated_at')
         for item in disabled_fields:
             if item in form.base_fields:

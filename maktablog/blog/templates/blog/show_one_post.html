@@ -20,8 +20,9 @@
             </div>
 
             <div>
-                <i id="star-post" data-login="{% if user.is_authenticated %}loggedin{% else %}loggedout{% endif %}"
-                   class="fa fa-star-o fa-3x"></i>
+                <i id="star-post" data-post-id="{{post_detail.id}}"
+                   data-login="{% if user.is_authenticated %}loggedin{% else %}loggedout{% endif %}"
+                   class="fa {% if user in post_detail.star.all %}fa-star{% else %}fa-star-o{% endif %} fa-3x"></i>
             </div>
 
         </div>
@@ -42,106 +43,122 @@
                 {% for item in post_detail.post.all %}
 
                 <li class="m-2">
-                    <a class="d-inline p-2 h3 rounded text-decoration-none"
-                       style="color:#006e2c; background:#ccf1db;" href="{% url 'blog:posts_in_label' item.label.id %}"> {{item.label.label_name}} </a>
+                    <a class="d-inline border border-info p-2 h4 rounded text-decoration-none"
+                       style="color:#006e2c; background:#ccf1db;" href="{% url 'blog:posts_in_label' item.label.id %}">
+                        {{item.label.label_name}} </a>
                 </li>
                 {% endfor %}
             </ul>
             <div class="ml-5">
-                <a href="#" data-login="{% if user.is_authenticated %}loggedin{% else %}loggedout{% endif %}" id="like"
-                   type="button"
-                   class="btn btn-outline-success btn-lg px-2 waves-effect show_login m-2">
-                    <span class="">0</span>
+
+                <button data-login="{% if user.is_authenticated %}loggedin{% else %}loggedout{% endif %}" id="like"
+                        type="button" data-post-id="{{post_detail.id}}"
+                        class="btn {% if user in post_detail.likes.all %} {{'btn-outline-success'}} {% endif %} btn-lg px-2 waves-effect show_login m-2">
+                    <span class="value-likes">{{post_detail.likes.count}}</span>
                     <i class="fa fa-thumbs-up ml-1 fa-2x"></i>
-                </a>
-                <a href="#" data-login="{% if user.is_authenticated %}loggedin{% else %}loggedout{% endif %}"
-                   id="dislike" type="button" class="btn btn-outline-danger btn-lg px-2 waves-effect show_login m-2">
-                    <span class="value">0</span>
+                </button>
+                <button data-login="{% if user.is_authenticated %}loggedin{% else %}loggedout{% endif %}"
+                        id="dislike" type="button" data-post-id="{{post_detail.id}}"
+                        class="btn {% if user in post_detail.dislikes.all %} {{'btn-outline-danger'}} {% endif %} btn-lg px-2 waves-effect show_login m-2">
+                    <span class="value-dislikes">{{post_detail.dislikes.count}}</span>
                     <i class="fa fa-thumbs-down ml-1 fa-2x"></i>
-                </a>
+                </button>
+
 
             </div>
         </div>
 
 
-        <div class="container border-top">
+        <div class="container">
             <div class="text-right m-3">
-                <span class="bg-secondary">نظرات کاربران</span>
+                <span class="btn btn-info">نظرات کاربران</span>
                 <div class="section-body">
                     <div data-action="modal" class="responses-editor card-cm">
                         <div class="responses-editor-inner">
-                            <div class="row justify-content-around responses-header">
-                                <div class="col-2 user--avatar">
-                                    <img style="width:50px" class="rounded-circle"
-                                         src="/media/{{post_detail.user.userinfo.image}}" alt="">
-                                </div>
-                                <span class="col-9 user--name border" data-placeholder="نظر خود را درباره این پست بنویسید">dddd</span>
-                            </div>
-                            <div class="mt-3 responses-text">
-                                <form id="commentsFormPost" method="POST"
-                                      action="">
 
-                                    <div class="responses-textArea">
+                            <div class="mt-3">
+                                <div class="border text-muted p-1 rounded border-radius-3" id="box-type-comment"
+                                     data-login="{% if user.is_authenticated %}loggedin{% else %}loggedout{% endif %}">
+                                    <img class="rounded-circle" src="/media/images/default-avatar.jpg">
+                                    <div class="d-inline-block">نظر خود را درباره این پست بنویسید ...</div>
+
+
+                                    <form class="d-none" id="commentsFormPost" method="POST"
+                                          action="">
+
+                                        <div class="responses-textArea">
                                         <textarea id="commentBody" class="textarea"
-                                                  data-login="{% if user.is_authenticated %}loggedin{% else %}loggedout{% endif %}"
+
                                                   name="comment_body"
-                                                  data-autoresize=""
+
                                                   style="overflow: hidden; overflow-wrap: break-word;width:100%; height: 100px;"
                                                   placeholder="لطفا نظر خود را در این قسمت وارد کنید ..."></textarea>
 
 
-                                        <!-- MODAL-->
-                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-                                             aria-labelledby="myModalLabel">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header d-flex justify-content-between">
-                                                        <div>
-                                                            <h4 class="modal-title text-right" id="myModalLabel">به
-                                                                اکانت
-                                                                خود لاگین کنید!</h4></div>
-                                                        <div>
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close"><span
-                                                                    aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div id="response"></div>
+                                        </div>
+                                        <div class="responses-buttons d-flex justify-content-center">
+                                            <button class="btn bg-warning btn-main btn-rounded btn-lg block-end"
+                                                    type="submit" id="send-comment">
+                                                ارسال
+                                                دیدگاه
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
 
-                                                        <div class="form-group">
-                                                            <input type="text" class="form-control"/>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <input type="text" class="form-control"/>
-                                                        </div>
-                                                        <button class="btn btn-primary" id="btn">alert</button>
-                                                        <button class="btn btn-primary" id="btn-error">error</button>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default"
-                                                                data-dismiss="modal">
-                                                            Close
-                                                        </button>
-                                                        <button type="button" class="btn btn-primary">Save changes
-                                                        </button>
-                                                    </div>
+                                <!-- MODAL-->
+                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+                                     aria-labelledby="myModalLabel">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header d-flex justify-content-between">
+                                                <div>
+                                                    <h4 class="modal-title text-right" id="myModalLabel">به
+                                                        اکانت
+                                                        خود لاگین کنید</h4></div>
+                                                <div>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close"><span
+                                                            aria-hidden="true">&times;</span>
+                                                    </button>
                                                 </div>
                                             </div>
+                                            <div class="modal-body">
+                                                <div class="text-center text-mute p-4" id="response">اگر کاربر جدید
+                                                    هستید ثبت نام کنید
+                                                </div>
+
+
+                                            </div>
+                                            <div class="d-flex modal-footer justify-content-center">
+                                                <a href="{% url 'blog:signup' %}" type="button" class="btn btn-default">
+                                                    ثبت نام
+                                                </a>
+                                                <a href="{% url 'login' %}" type="button" class="btn btn-primary">ورود
+                                                </a>
+                                            </div>
                                         </div>
-
-
                                     </div>
-                                    <div class="responses-buttons d-flex justify-content-center">
-                                        <button class="btn bg-warning btn-main btn-rounded btn-lg block-end"
-                                                type="submit">
-                                            ارسال
-                                            دیدگاه
-                                        </button>
+                                </div>
+                                <div class="list_comments mt-4 mb-2">
+                                    <div class="m-3">لیست نظرات</div>
+                                    {% if post_detail.comment_set.all %}
+                                    {% for comment in post_detail.comment_set.all %}
+                                    <div class="row justify-content-around" id="comment-item">
+                                        <div class="col-2 user--avatar">
+                                            <img style="width:50px" class="rounded-circle"
+                                                 src="/media/{{user.userinfo.image}}" alt="">
+                                        </div>
+                                        <span class="col-9 user--name border"
+                                              data-placeholder="نظر خود را درباره این پست بنویسید">dddd</span>
                                     </div>
-                                </form>
-
+                                    {% endfor %}
+                                    {% else %}
+                                    <div class="border p-3 text-muted rounded">هیچ نظری برای این پست ثبت نشده است. اولین
+                                        نفری باشید که نظر می دهید...
+                                    </div>
+                                    {% endif %}
+                                </div>
 
                             </div>
                         </div>

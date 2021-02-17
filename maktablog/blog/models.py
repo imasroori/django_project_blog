@@ -91,7 +91,8 @@ class Label(models.Model):
 
 class Post(Text):
     title = models.CharField('عنوان', max_length=30)
-    # text = models.TextField('متن', max_length=1000)
+    # star = models.BooleanField('ذخیره کردن', default=False)
+    star = models.ManyToManyField(User, verbose_name='ذخیره کردن', null=True, blank=True, related_name="post_star")
     image = models.ImageField('عکس پست', upload_to='post_images/')
     created_at = models.DateTimeField('زمان ایجاد پست', max_length=30, auto_now_add=True)
     updated_at = models.DateTimeField('زمان بروزرسانی پست', max_length=30, auto_now=True)

@@ -23,5 +23,6 @@ urlpatterns = [
                   path('accounts/', include('django.contrib.auth.urls')),
                   path('', include('blog.urls')),
                   path('blog/', include('blog.urls')),
+                  path('ajax/', include('ajax.urls')),
                   path('tinymce/', include('tinymce.urls')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

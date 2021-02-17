@@ -65,15 +65,7 @@
     {% block navbar %}
     <div class="container-fluid p-0">
         <ul class="navbar-nav">
-            {% if user.is_authenticated %}
-            <li class="nav-item">
-                <a class="nav-link h5" href="{% url 'blog:profile' %}">ثبت نام</a>
-            </li>
-            {% else %}
-            <li class="nav-item">
-                <a class="nav-link h5" href="{% url 'blog:signup' %}">ثبت نام</a>
-            </li>
-            {% endif %}
+
             <li class="nav-item">
                 <a class="nav-link h5" href="{% url 'blog:show_all_posts' %}">همه پست ها</a>
             </li>
@@ -176,7 +168,8 @@
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/sidebar.js' %}"></script>
 <script src="{% static 'js/search_button.js' %}"></script>
-
+{% block js %}
+{% endblock %}
 
 </body>
 </html>

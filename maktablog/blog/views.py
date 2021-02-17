@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.views import generic
 
@@ -106,7 +106,7 @@ class PopularPosts(generic.ListView):
     context_object_name = 'posts'
 
     def get_queryset(self):
-        return Post.objects.all().filter(title__contains='پایتون')
+        return Post.objects.all().filter(activation=True)
 
 
 class NewestPosts(generic.ListView):
@@ -156,3 +156,4 @@ def signup(request):
     else:
         signup_form = SignUpForm()
         return render(request, 'blog/signup.html', {'signup_form': signup_form})
+
