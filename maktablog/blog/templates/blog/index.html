@@ -5,7 +5,7 @@
 <div class="container">
     {% if posts %}
     {% for post in posts %}
-    {% if post.activation and post.verification %}
+    {% if post.activated and post.verificated %}
     <a class="text-decoration-none m-5" href="{% url 'blog:show_post' post.id %}">
 
         <div class="row">

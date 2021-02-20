@@ -3,8 +3,10 @@
 <html lang="{{ LANGUAGE_CODE|default:"fa-ir" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
 <head>
 <title>{% block title %}{% endblock %}</title>
+
 <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}">
 <link rel="stylesheet" type="text/css" href="{% static "css/font_style.css" %}">
+
 {% if not is_popup and is_nav_sidebar_enabled %}
   <link rel="stylesheet" type="text/css" href="{% static "admin/css/nav_sidebar.css" %}">
   <script src="{% static 'admin/js/nav_sidebar.js' %}" defer></script>
@@ -29,9 +31,9 @@
 
     {% if not is_popup %}
     <!-- Header -->
-    <div id="header">
+    <div style="padding:25px;" id="header">
         <div id="branding">
-        {% block branding %}{% endblock %}
+            {% block branding %}{% endblock %}
         </div>
         {% block usertools %}
         {% if has_permission %}

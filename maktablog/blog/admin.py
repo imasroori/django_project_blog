@@ -35,24 +35,26 @@ class PostInline(admin.TabularInline):
     model = Post
 
 
-class CommentAdmin(admin.ModelAdmin):
-    fieldsets = (
-        (None, {'fields': ('user', 'post')}),
-        ("جزئیات نظر", {'fields': ('text', 'verification', 'date_pub')}),
-    )
-    # inlines = [PostInline]
-    readonly_fields = ['user', 'date_pub']
-
-
 class CommentInline(admin.StackedInline):
     model = Comment
 
 
+class CommentAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (None, {'fields': ('user', 'post')}),
+        ("جزئیات نظر", {'fields': ('text', 'verificated', 'pub_date')}),
+    )
+    # inlines = [PostInline]
+    readonly_fields = ['user', 'pub_date']
+
+
+
+
 class PostAdmin(admin.ModelAdmin):
     fieldsets = (
-        ("اطلاعات پست", {'fields': ('user', 'title', 'image', 'text',)}),
+        ("اطلاعات پست", {'fields': ('user', 'title', 'image', 'text', 'star')}),
         ("زمان و تاریخ", {'fields': ('likes', 'dislikes')}),
-        ("وضعیت", {'fields': ('activation', 'verification')}),
+        ("وضعیت", {'fields': ('activated', 'verificated')}),
         ("طبقه بندی و برچسب ها", {'fields': ('category',)}),
     )
 
@@ -71,30 +73,36 @@ class PostAdmin(admin.ModelAdmin):
     num_likes.short_description = 'تعداد پسندیدن'
     num_dislikes.short_description = 'تعداد نپسندیدن'
     num_comments.short_description = 'تعداد نظرات'
-    list_display = ['title', 'user', 'activation', 'verification', 'num_likes', 'num_dislikes', 'num_comments']
-    filter_horizontal = ['likes', 'dislikes']
+    list_display = ['title', 'user', 'activated', 'verificated', 'num_likes', 'num_dislikes', 'num_comments','show_link']
+    list_display_links = ('title','show_link',)
+    filter_horizontal = ['likes', 'dislikes', 'star']
+
+    def show_link(self, obj):
+        return '<a href="/%s/show_post">Click here</a>' % obj.id
+
+    show_link.allow_tags = True
 
     def make_activate_post(self, request, queryset):
-        queryset.update(activation=True)
+        queryset.update(activated=True)
         return self.message_user(request,
                                  "{} پست با موفقیت فعال شد.".format(queryset.count()))
 
     def make_deactivate_post(self, request, queryset):
-        queryset.update(activation=False)
+        queryset.update(activated=False)
         return self.message_user(request,
                                  "{} پست با موفقیت غیرفعال شد.".format(queryset.count()))
 
     def make_verify_post(self, request, queryset):
         if not request.user.has_perm('blog.can_verify'):
             return self.message_user(request, "شما دسترسی لازم را ندارید!", level=messages.ERROR)
-        queryset.update(verification=True)
+        queryset.update(verificated=True)
         return self.message_user(request,
                                  "{} پست با موفقیت تایید شد.".format(queryset.count()))
 
     def make_unverify_post(self, request, queryset):
         if not request.user.has_perm('blog.can_verify'):
             return self.message_user(request, "شما دسترسی لازم را ندارید!", level=messages.ERROR)
-        queryset.update(verification=False)
+        queryset.update(verificated=False)
         return self.message_user(request,
                                  "{} پست با موفقیت رد شد.".format(queryset.count()))
 
@@ -109,7 +117,7 @@ class PostAdmin(admin.ModelAdmin):
         disabled_fields = set()
         if not request.user.has_perm('blog.can_verify'):
             form.base_fields['user'].initial = request.user
-            disabled_fields = ('user', 'created_at', 'updated_at', 'verification')
+            disabled_fields = ('user', 'created_at', 'updated_at', 'verificated')
 
         if request.user.has_perm('blog.can_verify'):
             disabled_fields = ('user', 'created_at', 'updated_at')

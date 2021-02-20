@@ -62,42 +62,11 @@ class IndexView(generic.ListView):
         return context
 
 
-def showpost(request, id):
-    # post_detail = Post.objects.get(id=id)
-
-    if request.method == "POST":
-        user = User.objects.get(username=request.user)
-        post_id = id
-        comment_text = request.POST['comment_body']
-        post = Post.objects.all().filter(id=post_id)[0]
-        # print(post)
-        print(comment_text)
-        print(post_id)
-        print(user)
-
-        comment = Comment.objects.create(user=user, post=post, text=comment_text)
-        messages.add_message(request, messages.SUCCESS, 'پیام شما با موفقیت ثبت شد')
-        post_detail = Post.objects.get(id=id)
-        return render(request, 'blog/show_one_post.html', {'post_detail': post_detail})
-    post_detail = Post.objects.get(id=id)
-    return render(request, 'blog/show_one_post.html', {'post_detail': post_detail})
-
-
-# class ShowPost(generic.DetailView):
-#     pk_url_kwarg = 'id'
-#     model = Post
-#     context_object_name = 'post_detail'
-#     template_name = 'blog/show_one_post.html'
-#
-#     def post(self, request, *args, **kwargs):
-#         if not request.user.is_authenticated:
-#             return HttpResponseForbidden()
-#         self.object = self.get_object()
-#         form = self.get_form()
-#         if form.is_valid():
-#             return self.form_valid(form)
-#         else:
-#             return self.form_invalid(form)
+class ShowPost(generic.DetailView):
+    pk_url_kwarg = 'id'
+    model = Post
+    context_object_name = 'post_detail'
+    template_name = 'blog/show_one_post.html'
 
 
 class ShowAllPosts(generic.ListView):
@@ -151,6 +120,8 @@ class NewestPosts(generic.ListView):
 def signup(request):
     if request.POST:
         signup_form = SignUpForm(request.POST, request.FILES)
+        print(request.POST)
+        print(request.FILES)
         if signup_form.is_valid():
             user = signup_form.save()
             userinfo = signup_form.save()

@@ -6,6 +6,9 @@ star_post = document.getElementById("star-post")
 send_comment = document.getElementById("send-comment")
 commentForm = document.getElementById('commentForm')
 
+btn_like_comment = document.getElementById("like-comment")
+btn_dislike_comment = document.getElementById("dislike-comment")
+
 star_post.addEventListener("click", function(){
                                     if(this.getAttribute("data-login") == 'loggedout'){
 
@@ -15,8 +18,8 @@ star_post.addEventListener("click", function(){
                                     }else{
                                     var post_id = this.getAttribute("data-post-id")
                                     $.ajax({
-
-                                    url:'/ajax/star_post',
+                                    type:'GET',
+                                    url:'/api/star_post',
                                     data:{
 
                                         'post_id':post_id ,
@@ -27,9 +30,11 @@ star_post.addEventListener("click", function(){
                                         if (data.is_stared){
                                         star_post.classList.remove('fa-star')
                                         star_post.classList.add('fa-star-o')
+                                        console.log('شما پست را از حالت ذخیره خارج کردید')
                                                  }else{
                                                    star_post.classList.remove('fa-star-o')
                                                    star_post.classList.add('fa-star')
+                                                   console.log('شما پست را ذخیره کردید')
 
                                                  }
                                         }
@@ -63,12 +68,12 @@ btn_like.addEventListener("click",function(){
 
                                     }else{
                                     var post_id = this.getAttribute("data-post-id")
-                                    var like_dislike_id = this.id
+
                                             $.ajax({
-                                            url:'/ajax/like_dislike_post',
+                                            type:'GET',
+                                            url:'/api/like_post',
                                             data:{
                                             'post_id':post_id,
-                                             'like_dislike':like_dislike_id,
                                             },
                                             datatype:'json',
                                             success:function(data){
@@ -113,13 +118,11 @@ btn_dislike.addEventListener("click",function(){
                                     }else{
 
                                     var post_id = this.getAttribute("data-post-id")
-                                    var like_dislike_id = this.id
 
                                             $.ajax({
-                                            url:'/ajax/like_dislike_post',
+                                            url:'/api/dislike_post',
                                             data:{
                                             'post_id':post_id,
-                                            'like_dislike':like_dislike_id,
                                             },
                                             datatype:'json',
                                             success:function(data){
@@ -155,3 +158,148 @@ btn_dislike.addEventListener("click",function(){
 
 
 
+commentForm.addEventListener('submit',function(e){
+                                            e.preventDefault()
+
+                                            var commentBody = $('#commentBody')
+                                            var post_id = this.getAttribute("data-post-id")
+                                            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                                            $.ajax({
+
+                                            url:'/api/comment_post_form',
+                                            headers: {'X-CSRFToken': csrftoken},
+                                            type: "POST",
+                                            data:{
+                                            'post':post_id,
+                                            'text':commentBody.val(),
+                                            },
+                                            datatype:'json',
+                                            success:function(data){
+                                            alert("نظر شما با موفقیت ثبت شد، پس از تایید مدیر در سایت نمایش داده می شود. با تشکر از شما")
+
+                                             var cb = $("#commentBody")[0]
+                                            cb.value=""
+                                            if (data.is_created_comment){
+                                            console.log("کامنت ثبت شد")
+
+
+                                            }
+
+                                                }
+                                            })
+                                
+
+
+})
+
+
+function myFunction1(d){
+
+                                    if(d.getAttribute("data-login") == 'loggedout'){
+
+                                    d.setAttribute("data-toggle","modal")
+                                    d.setAttribute("data-target","#myModal")
+
+                                    }else{
+//                                    var post_id = this.getAttribute("data-post-id")
+                                    let commentid = d.getAttribute("data-comment-id")
+//                                    console.log(typeof(comment_id))
+                                    let vallike = '.val-like-comment-'+ commentid
+                                    let valdislike = '.val-dislike-comment-'+ commentid
+//                                    let xlike = $("#like-comment-"+commentid)
+                                    let xdislike = document.getElementById("dislike-comment-"+commentid)
+                                            $.ajax({
+                                            type:'GET',
+                                            url:'/api/like_comment',
+                                            data:{
+//                                            'post_id':post_id,
+                                            'comment_id':commentid,
+                                            },
+                                            datatype:'json',
+                                            success:function(data){
+                                            if (data.is_liked){
+                                            console.log("شما این نظر را پسندیده اید")
+                                            let valuelikescomment = $(vallike)[0].innerHTML
+                                            valuelikescomment = +valuelikescomment-1
+                                            $(vallike)[0].innerHTML = valuelikescomment
+
+                                            d.classList.remove('btn-outline-success')
+
+                                            }else{
+                                            console.log("شما این پست را پسندیدید")
+                                            let valuelikescomment = $(vallike)[0].innerHTML
+                                            valuelikescomment = +valuelikescomment+1
+                                            $(vallike)[0].innerHTML = valuelikescomment
+                                            d.classList.add('btn-outline-success')
+
+                                                if(data.is_in_disliked){
+                                                xdislike.classList.remove('btn-outline-danger')
+                                                let valuedislikescomment = $(valdislike)[0].innerHTML
+                                                valuedislikescomment = +valuedislikescomment-1
+                                                $(valdislike)[0].innerHTML = valuedislikescomment
+                                                }
+                                            }
+
+                                                }
+                                            })
+
+
+                                    }
+
+
+}
+function myFunction2(d){
+
+
+                                    if(d.getAttribute("data-login") == 'loggedout'){
+
+                                    d.setAttribute("data-toggle","modal")
+                                    d.setAttribute("data-target","#myModal")
+
+                                    }else{
+//                                    var post_id = this.getAttribute("data-post-id")
+                                    let commentid = d.getAttribute("data-comment-id")
+                                    let vallike = '.val-like-comment-'+commentid
+                                    let valdislike = '.val-dislike-comment-'+ commentid
+//                                    let xlike = $("#like-comment-"+commentid)
+                                    let xlike = document.getElementById("like-comment-"+commentid)
+
+                                            $.ajax({
+                                            type:'GET',
+                                            url:'/api/dislike_comment',
+                                            data:{
+//                                            'post_id':post_id,
+                                            'comment_id':commentid,
+                                            },
+                                            datatype:'json',
+                                            success:function(data){
+                                            if (data.is_disliked){
+                                            console.log("شما این نظر را نپسندیده اید")
+                                            let valuedislikescomment = $(valdislike)[0].innerHTML
+                                            valuedislikescomment = +valuedislikescomment-1
+                                            $(valdislike)[0].innerHTML = valuedislikescomment
+                                            d.classList.remove('btn-outline-danger')
+
+                                            }else{
+                                            console.log("شما این پست را نپسندیدید")
+                                            let valuedislikescomment = $(valdislike)[0].innerHTML
+                                            valuedislikescomment = +valuedislikescomment+1
+                                            $(valdislike)[0].innerHTML = valuedislikescomment
+                                            d.classList.add('btn-outline-danger')
+
+                                                if(data.is_in_liked){
+                                                xlike.classList.remove('btn-outline-success')
+                                                let valuelikescomment = $(vallike)[0].innerHTML
+                                                valuelikescomment = +valuelikescomment-1
+                                                $(vallike)[0].innerHTML = valuelikescomment
+                                                }
+                                            }
+
+                                                }
+                                            })
+
+
+                                    }
+
+
+}

@@ -5,3 +5,5 @@ Khayyam
 django-tinymce
 djangorestframework
 PIL
+pygments
+django-filter

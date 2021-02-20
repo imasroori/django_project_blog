@@ -12,17 +12,18 @@ class UserInfo(models.Model):
     # last_name = models.CharField('نام خانوادگی', max_length=30, blank=True)
     alias_name = models.CharField('نام مستعار', max_length=30)
     phone_number = models.CharField('شماره تلفن', max_length=11)
-    image = models.ImageField('عکس پروفایل', upload_to='images/', default="images/default-avatar.jpg")
+    image = models.ImageField('عکس پروفایل', upload_to='images/', null=True, blank=True)
     user = models.OneToOneField(User, verbose_name='کاربر', on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        img = Image.open(self.image.path)
-        if img.mode in ("RGBA", "P"): img = img.convert("RGB")
-        if img.height > 50 or img.width > 50:
-            output_size = (50, 50)
-            img.thumbnail(output_size)
-            img.save(self.image.path)
+        if self.image:
+            img = Image.open(self.image.path)
+            if img.mode in ("RGBA", "P"): img = img.convert("RGB")
+            if img.height > 50 or img.width > 50:
+                output_size = (50, 50)
+                img.thumbnail(output_size)
+                img.save(self.image.path)
 
     @property
     def image_url(self):
@@ -59,7 +60,7 @@ class Text(models.Model):
     dislikes = models.ManyToManyField(User,
                                       related_name='%(app_label)s_disliked_%(class)ss',
                                       related_query_name='%(app_label)s_disliked_%(class)ss', null=True, blank=True)
-    user = models.ForeignKey(User, verbose_name='کاربر', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name='کاربر', on_delete=models.CASCADE, related_name='%(class)s')
 
     class Meta:
         abstract = True
@@ -96,8 +97,8 @@ class Post(Text):
     image = models.ImageField('عکس پست', upload_to='post_images/')
     created_at = models.DateTimeField('زمان ایجاد پست', max_length=30, auto_now_add=True)
     updated_at = models.DateTimeField('زمان بروزرسانی پست', max_length=30, auto_now=True)
-    activation = models.BooleanField('فعال/غیرفعال', default=False)
-    verification = models.BooleanField('تایید کردن محتوای پست', default=False)
+    activated = models.BooleanField('فعال/غیرفعال', default=False)
+    verificated = models.BooleanField('تایید کردن محتوای پست', default=False)
     category = models.ForeignKey(Category, verbose_name='دسته بندی', on_delete=models.CASCADE)
     # like = models.ForeignKey(Like, verbose_name='پسندیدن/نپسندیدن', on_delete=models.CASCADE)
     # user = models.ForeignKey(User, verbose_name='کاربر', on_delete=models.CASCADE)
@@ -121,10 +122,10 @@ class Post(Text):
 
 class Comment(Text):
     # text = models.TextField('متن نظر')
-    date_pub = models.DateTimeField('زمان انتشار', max_length=30, auto_now=True)
+    pub_date = models.DateTimeField('زمان انتشار', max_length=30, auto_now=True)
     # date_pub = models.DateTimeField('زمان بروزرسانی پست', max_length=30, auto_now=True)
-    # date_create = models.CharField('زمان ایجاد', max_length=30)
-    verification = models.BooleanField('تایید کردن محتوای نظر', default=False)
+    created_date = models.DateTimeField('زمان ایجاد', max_length=30, auto_now_add=True)
+    verificated = models.BooleanField('تایید کردن محتوای نظر', default=False)
     # user = models.ForeignKey(User, verbose_name='کاربر', on_delete=models.CASCADE)
     post = models.ForeignKey(Post, verbose_name='پست', on_delete=models.CASCADE)
 
@@ -136,6 +137,7 @@ class Comment(Text):
     class Meta:
         # verbose_name = "نظر"
         verbose_name_plural = "نظرات"
+        ordering = ['-pub_date']
 
 
 class LabelPost(models.Model):
