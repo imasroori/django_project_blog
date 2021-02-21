@@ -41,7 +41,7 @@
         <div class="col-9">
 
             {% for item in post_in_label.post_set.all %}
-            {% if item.activation and item.verification %}
+            {% if item.activated and item.verificated %}
             <div class="card mb-3">
                 <a class="text-decoration-none" href="{% url 'blog:show_post' item.id %}">
                     <div class="row">
