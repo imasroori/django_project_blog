@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load custom_tags %}
+{% block content %}
+
+<div class="container">
+    {% if posts %}
+    {% for post in posts %}
+    {% if post.activated and post.verificated %}
+    <a class="text-decoration-none m-5" href="{% url 'blog:show_post' post.id %}">
+
+        <div class="row">
+
+            <div class="col-12 d-flex align-items-end border rounded"
+                 style="background-image: url(/media/{{post.image }}); height:150px">
+
+                <div class="mb-3 ml-2"><img class="rounded-circle" src="/media/{{post.user.userinfo.image}}" alt="555"></div>
+                <div class="card-body text-right">
+                    <h5 class="card-title">{{post.title}}</h5>
+                    <p class="card-text"><small class="">{{post.created_at|convert_to_jdate}}</small></p>
+                </div>
+
+            </div>
+
+
+        </div>
+    </a>
+    {% endif %}
+    {% endfor %}
+    {% else %}
+    <div class="text-center alert alert-danger">نتیجه ای یافت نشد. <br>متاسفانه چنین اطلاعاتی در پایگاه داده ثبت نشده است</div>
+    {% endif %}
+</div>
+
+{% endblock %}

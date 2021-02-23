@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'bootstrapform',
     # 'django_quill',
     'rest_framework',
+    'django_filters',
+    'django.contrib.postgres',
     'tinymce',
 
 ]

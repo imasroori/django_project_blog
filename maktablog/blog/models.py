@@ -108,6 +108,9 @@ class Post(Text):
 
                                        )
 
+    def verificated_comment_set(self):
+        return self.comment_set.all().filter(verificated=True)
+
     def __str__(self):
         return self.text
 
@@ -118,6 +121,7 @@ class Post(Text):
             ("can_verify", "Can verify post"),
             ("can_unverify", "Can unverify post"),
         )
+        ordering = ['-created_at']
 
 
 class Comment(Text):
@@ -137,7 +141,7 @@ class Comment(Text):
     class Meta:
         # verbose_name = "نظر"
         verbose_name_plural = "نظرات"
-        ordering = ['-pub_date']
+        ordering = ['-created_date']
 
 
 class LabelPost(models.Model):

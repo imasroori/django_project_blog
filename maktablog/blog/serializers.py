@@ -3,6 +3,12 @@ from rest_framework import serializers
 from .models import Post, Comment
 
 
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ['title', 'text', 'label_post_set', 'user']
+
+
 class StarPost(serializers.ModelSerializer):
     # star =
     class Meta:

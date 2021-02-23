@@ -14,10 +14,11 @@
 </head>
 
 <body class="bg-light" dir="rtl">
-<div class="row p-4 justify-content-between pl-5 pr-5 mb-0 ml-0 mr-0" style="background-color:rgb(65,118,144)"
+<div class="row p-2 justify-content-between pl-5 pr-5 mb-0 ml-0 mr-0 align-items-center"
+     style="background-color:rgb(65,118,144)"
      id="header-site">
     {% block header %}
-    <div class="mb-0 mt-0 mr-4">
+    <div class="mb-0 ml-5 mt-0 mr-4">
         <a class="text-decoration-none h2" style="color:rgb(245,221,93)" href="{% url 'blog:index' %}">
 
             وبلاگ سخن
@@ -26,86 +27,107 @@
     </div>
 
 
-    <div>
-        <div class="input-group">
-            <div class="form-outline">
+    <div class="flex-grow-1 ml-5 mr-5 pr-5 pl-5 align-items-center">
+        <div class="mt-3">
+            <form class="form" method="GET" action="{% url 'blog:search' %}">
+                <div class="row mt-2">
+                    <div class="d-flex flex-grow-1">
+                        <input name="query" autocomplete="on" class="form-control input-lg select2 js-data-example-ajax" width="200px" id="inputlg"
+                               placeholder="جستجو در متن، برچسب و نویسنده و ..."
+                               type="text">
 
-                <input type="search" id="form1" class="form-control form-control-lg" width="100px"
-                       placeholder="عبارت مورد نظر را جستجو کنید ..."/>
-
-            </div>
-            <div class="d-flex justify-content-between">
-                <button type="button" class="pt-0 ml-1 btn btn-success">
-                    <i class="fa fa-search"></i>
-                </button>
-                <button type="button" class="pt-0 btn btn-success" data-toggle="modal"
-                        data-target="#modal-advanced-search">
-                    جستجوی پیشرفته
-                </button>
-
-
-                <!--   Modal Search Box -->
-
-                <div class="modal fade" id="modal-advanced-search" tabindex="-1" role="dialog"
-                     aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content m-5 p-5">
-                            <div class="h3 text-center">جستجوی پیشرفته</div>
-                            <form class="form text-right">
-                                <div class="row g-3 mt-3 align-items-center">
-
-                                    <div class="col-auto mr-5 ml-5">
-                                        <input type="text" id="title" name="title" class="form-control"
-                                               placeholder="جستجو در عنوان پست">
-                                    </div>
-
-                                    <div class="col-auto mr-5 ml-5">
-                                        <input type="text" id="writer" name="writer" class="form-control"
-                                               placeholder="جستجو در نام نویسنده">
-                                    </div>
-
-                                </div>
-                                <div class="row mt-3 align-items-center">
-
-                                    <div class="col-auto mr-5 ml-5">
-                                        <input type="text" id="text" name="text" class="form-control"
-                                               placeholder="جستجو در متن">
-                                    </div>
-                                    <div class="col-auto mr-5 ml-5">
-                                        <input type="text" id="label" name="label" class="form-control"
-                                               placeholder="جستجو در برچسب">
-                                    </div>
-
-
-                                </div>
-                                <div class="row mt-3 align-items-center">
-
-                                    <div class="col-auto mr-5 ml-5">
-                                        <input type="text" id="date-start" name="date-start" class="form-control"
-                                               placeholder="از تاریخ">
-                                    </div>
-
-                                    <div class="col-auto mr-5 ml-5">
-                                        <input type="text" id="date-end" name="date-end" class="form-control"
-                                               placeholder="تا تاریخ">
-                                    </div>
-                                </div>
-                                <div class="row mt-3 align-items-center justify-content-center">
-                                    <input type="submit" class="btn btn-success pill-rounded" value="جستجو">
-                                </div>
-
-                            </form>
-
-                        </div>
                     </div>
+                    <div>
+                        <input style="margin-right:-200px;" class="btn btn-danger" value="جستجو" type="submit">
+                    </div>
+
+                    <button type="button" class="a pt-1 mr-1 btn bg-success btn-warning" data-toggle="modal"
+                            data-target="#modal-advanced-search">پیشرفته
+                    </button>
                 </div>
 
+            </form>
+        </div>
+
+        <!--        <div class="input-group">-->
+
+        <!--            <div class="form-outline">-->
+
+        <!--                <input type="search" autocomplete="on" id="form1" class="form-control form-control-lg" width="100px"-->
+        <!--                       placeholder="عبارت مورد نظر را جستجو کنید ..."/>-->
+
+        <!--            </div>-->
+        <!--            <div class="d-flex justify-content-between">-->
+        <!--                <a href="{% url 'blog:search' %}" style="margin-right:-50px; margin-left:2px" type="button"-->
+        <!--                   class="btn">-->
+        <!--                    <i class="fa fa-search fa-2x"></i>-->
+        <!--                </a>-->
+
+        <!--            </div>-->
+        <div>
+
+        </div>
+    </div>
+
+
+    <!--   Modal Search Box -->
+
+    <div class="modal fade" id="modal-advanced-search" tabindex="-1" role="dialog"
+         aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content m-5 p-5">
+                <div class="h3 text-center">جستجوی پیشرفته</div>
+                <form method="get" action="{% url 'blog:search' %}" class="form text-right">
+                    <div class="row g-3 mt-3 align-items-center">
+
+                        <div class="col-auto mr-5 ml-5">
+                            <input type="text" id="title" name="title" class="form-control"
+                                   placeholder="جستجو در عنوان پست">
+                        </div>
+
+                        <div class="col-auto mr-5 ml-5">
+                            <input type="text" id="writer" name="writer" class="form-control"
+                                   placeholder="جستجو در نام نویسنده">
+                        </div>
+
+                    </div>
+                    <div class="row mt-3 align-items-center">
+
+                        <div class="col-auto mr-5 ml-5">
+                            <input type="text" id="text" name="text" class="form-control"
+                                   placeholder="جستجو در متن">
+                        </div>
+                        <div class="col-auto mr-5 ml-5">
+                            <input type="text" id="label" name="label" class="form-control"
+                                   placeholder="جستجو در برچسب">
+                        </div>
+
+
+                    </div>
+                    <div class="row mt-3 align-items-center">
+
+                        <div class="col-auto mr-5 ml-5">
+                            <input type="text" id="date-start" name="date-start" class="form-control"
+                                   placeholder="از تاریخ">
+                        </div>
+
+                        <div class="col-auto mr-5 ml-5">
+                            <input type="text" id="date-end" name="date-end" class="form-control"
+                                   placeholder="تا تاریخ">
+                        </div>
+                    </div>
+                    <div class="row mt-3 align-items-center justify-content-center">
+                        <input type="submit" class="btn btn-success pill-rounded" value="جستجو">
+                    </div>
+
+                </form>
 
             </div>
         </div>
-
     </div>
-    <div class="d-flex justify-content-between align-items-center">
+
+
+    <div class="d-flex mr-5 justify-content-between align-items-center">
         {% if user.is_authenticated %}
         <div class="mr-1 d-flex ml-1 text-white">{{user.username}} خوش آمدید!</div>
         <div class="mr-1 ml-1"><a class="btn btn-danger" href="{% url 'logout' %}?next={{request.path}}">خروج </a>
@@ -162,11 +184,16 @@
                 </a>
 
                 <div class="dropdown-menu bg-success text-right" aria-labelledby="dropdownMenuLink">
+                    <span class="dropdown-item text-mute border-bottom">{{user.first_name}} {{user.last_name}}</span>
                     {% if perms.blog.add_post %}
+
                     <a class="dropdown-item" href="\admin">پنل مدیریت</a>
 
                     {% endif %}
+
+                    <a class="dropdown-item" href="{% url 'blog:user_stared_posts' %}">پست های ستاره دار</a>
                     <a class="dropdown-item" href="{% url 'blog:profile' %}">ویرایش اطلاعات</a>
+
 
                     <a class="dropdown-item border-top" href="{% url 'logout' %}?next={{request.path}}">خروج</a>
                 </div>
@@ -243,6 +270,7 @@
 
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/base_search.js' %}"></script>
 
 {% block js %}
 {% endblock %}

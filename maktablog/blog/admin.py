@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from django.core.checks import messages
 from django.core.mail import message
+from django.utils.safestring import mark_safe
 
 from .models import Post, Comment, Label, Category, UserInfo, LabelPost, MyModel
 
@@ -48,8 +49,6 @@ class CommentAdmin(admin.ModelAdmin):
     readonly_fields = ['user', 'pub_date']
 
 
-
-
 class PostAdmin(admin.ModelAdmin):
     fieldsets = (
         ("اطلاعات پست", {'fields': ('user', 'title', 'image', 'text', 'star')}),
@@ -73,14 +72,15 @@ class PostAdmin(admin.ModelAdmin):
     num_likes.short_description = 'تعداد پسندیدن'
     num_dislikes.short_description = 'تعداد نپسندیدن'
     num_comments.short_description = 'تعداد نظرات'
-    list_display = ['title', 'user', 'activated', 'verificated', 'num_likes', 'num_dislikes', 'num_comments','show_link']
-    list_display_links = ('title','show_link',)
+    list_display = ['title', 'user', 'activated', 'verificated', 'num_likes', 'num_dislikes', 'num_comments',
+                    'show_link_comments', ]
+    list_display_links = ('title', 'show_link_comments',)
     filter_horizontal = ['likes', 'dislikes', 'star']
 
-    def show_link(self, obj):
-        return '<a href="/%s/show_post">Click here</a>' % obj.id
+    def show_link_comments(self, obj):
+        return mark_safe('<a class="btn" href="/%s/show_post/#comments-post">نمایش نظرات</a>' % obj.id)
 
-    show_link.allow_tags = True
+    show_link_comments.short_description = "مشاهده صفحه نظرات"
 
     def make_activate_post(self, request, queryset):
         queryset.update(activated=True)

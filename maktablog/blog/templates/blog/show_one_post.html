@@ -46,7 +46,7 @@
                 <div class="d-inline-block  m-1 p-1">
 
                     <a class="p-2 h7 hover-overlay shadow rounded text-decoration-none"
-                       onMouseOver="this.style.color='#660066';this.style.backgroundColor='#aaffdd'"
+                       onMouseOver="this.style.color='#990000';this.style.backgroundColor='#ffcccc'"
                        onMouseOut="this.style.color='#006e2c';this.style.backgroundColor='#ccf1db'"
                        style="color:#006e2c; background:#ccf1db;"
                        href="{% url 'blog:posts_in_label' item.label.id %}">
@@ -154,23 +154,25 @@
 
                                             </div>
                                             <div class="d-flex modal-footer justify-content-center">
-                                                <a href="{% url 'blog:signup' %}" type="button" class="btn btn-default">
+                                                <a href="{% url 'blog:signup' %}?next={{request.path}}" type="button" class="btn btn-default">
                                                     ثبت نام
                                                 </a>
-                                                <a href="{% url 'login' %}" type="button" class="btn btn-primary">ورود
+                                                <a href="{% url 'login' %}?next={{request.path}}" type="button" class="btn btn-primary">ورود
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="mt-4 mb-2">
-                                    <div id="comments-post" class="btn pb-3 mr-5 btn-info"><i
+                                    <div id="comments-post" class="btn pb-3 mr-3 btn-info"><i
                                             class="fa fa-comments fa-2x"
                                             aria-hidden="true"></i>
                                         <span class="h5">نظرات کاربران</span>
-                                        <span class="h5 text-danger">({{post_detail.comment_set.count}} نظر)</span>
+
+                                        <span class="h5 text-danger">({{post_detail.comment_set |count_verify_comments}} نظر)</span>
                                     </div>
-                                    {% if post_detail.comment_set.all %}
+
+                                    {% if post_detail.comment_set.all|count_verify_comments %}
                                     {% for comment in post_detail.comment_set.all %}
                                     {% if comment.verificated %}
                                     <div class="row border-danger border-right rounded-left shadow bg-light m-5"
@@ -187,7 +189,7 @@
                                             <div class="d-flex">
 
                                                 <div class="text-secondary  ml-5">{{comment.user.first_name}}
-                                                    {{comment.user.last_name}}<br/>{{comment.pub_date|convert_to_jdate}}
+                                                    {{comment.user.last_name}}<br/>{{comment.created_date|convert_to_jdate}}
                                                 </div>
                                                 <div class="mr-5"><i class="fa fa-reply fa-2x"></i></div>
                                             </div>
@@ -196,6 +198,8 @@
 
                                         <div class="col-11 m-3">{{comment.text}}
                                         </div>
+
+
                                         <div class="col-12 d-flex flex-row-reverse" id="like-dislike-comments">
                                             <div>
                                                 <button data-login="{% if user.is_authenticated %}loggedin{% else %}loggedout{% endif %}"
@@ -214,12 +218,16 @@
                                                     <i class="fa fa-thumbs-down ml-1"></i>
                                                 </button>
                                             </div>
+
+                                        </div>
+                                        <div class="text-secondary small mr-3 mb-3"><span class="small"> زمان انتشار </span>{{comment.pub_date|convert_to_jdate}}
                                         </div>
                                     </div>
                                     {% endif %}
                                     {% endfor %}
                                     {% else %}
-                                    <div class="border p-3 text-muted rounded">هیچ نظری برای این پست ثبت نشده است. اولین
+                                    <div class="border mb-5 mt-5 p-3 text-muted rounded">هیچ نظری برای این پست ثبت نشده
+                                        است. اولین
                                         نفری باشید که نظر می دهید...
                                     </div>
                                     {% endif %}

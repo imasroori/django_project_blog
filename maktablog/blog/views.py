@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.http import HttpResponse, JsonResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.views import generic
@@ -12,8 +13,43 @@ from .forms import SignUpForm, UserUpdateForm, UserInfoUpdateForm
 from .models import Post, MyModel, UserInfo, Category, Label, Comment
 
 
-# def index(request):
-#     return render(request, 'blog/index.html')
+class SearchPostView(generic.ListView):
+    template_name = 'blog/search.html'
+
+    # model = Post
+    # context_object_name = 'posts'
+    # queryset =Post.objects.all()
+    # def get_queryset(self):
+    #     qs = Post.objects.all().filter(
+    #         Q(title__contains="نgویسنده") | Q(text__contains="testd"))
+    #     return qs
+
+    def get(self, request, *args, **kwargs):
+        query = request.GET.get('query', None)
+        if query:
+            print(query)
+            qs = Post.objects.all().filter(
+                Q(title__regex=r'^.*{}.*'.format(query)) | Q(text__regex=r'^.*{}.*'.format(query)) | Q(
+                    labelpost__label_name__regex=r'^.*{}.*'.format(query)) | Q(
+                    user__username__regex=r'^.*{}.*'.format(query))).distinct()
+            context = {
+                'posts': qs,
+            }
+            return render(request, self.template_name, context)
+        else:
+            q_title = request.GET.get('title', None)
+            q_text = request.GET.get('text', None)
+            q_writer = request.GET.get('writer', None)
+            q_label = request.GET.get('label', None)
+            # q_label=request.GET.get('label',None)
+            qs = Post.objects.all().filter(
+                Q(title__icontains=q_title) & Q(text__icontains=q_text) & Q(
+                    labelpost__label_name__icontains=q_label) & Q(
+                    user__username__icontains=q_writer)).distinct()
+            context = {
+                'posts': qs,
+            }
+            return render(request, self.template_name, context)
 
 
 class ShowAllCategories(generic.ListView):
@@ -54,7 +90,7 @@ class IndexView(generic.ListView):
     context_object_name = 'posts'
 
     def get_queryset(self):
-        return Post.objects.all()
+        return Post.objects.all().filter(activated=True, verificated=True)
 
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
@@ -72,10 +108,11 @@ class ShowPost(generic.DetailView):
 class ShowAllPosts(generic.ListView):
     template_name = 'blog/show_all_posts.html'
     context_object_name = 'posts'
-    queryset = Post.objects.all()
+
+    # queryset = Post.objects.all()
 
     def get_queryset(self):
-        return Post.objects.all()
+        return Post.objects.all().filter(activated=True, verificated=True)
 
     def get_context_data(self, **kwargs):
         context = super(ShowAllPosts, self).get_context_data(**kwargs)
@@ -158,3 +195,17 @@ def signup(request):
     else:
         signup_form = SignUpForm()
         return render(request, 'blog/signup.html', {'signup_form': signup_form})
+
+
+class UserStaredPosts(generic.ListView):
+    # model = Post
+    # context_object_name = 'stared_posts'
+    template_name = 'blog/user_stared_posts.html'
+
+    def get(self, request, *args, **kwargs):
+        user = User.objects.get(username=request.user)
+        stared_posts = Post.objects.filter(star=True)
+        context = {
+            'stared_posts': stared_posts,
+        }
+        return render(request, self.template_name, context)

@@ -10,7 +10,11 @@ register = template.Library()
 def convert_to_jdate(value):
     return JalaliDatetime(datetime(value.year, value.month, value.day, value.hour, value.minute,
                                    value.second, 821830, TehranTimezone())).strftime('%C')
-    # return JalaliDatetime(datetime(2015, 7, 22, 14, 47, 9, 821830, TehranTimezone()))
 
 
+def count_verify_comments(value):
+    return value.filter(verificated=True).count()
+
+
+register.filter('count_verify_comments', count_verify_comments)
 register.filter('convert_to_jdate', convert_to_jdate)

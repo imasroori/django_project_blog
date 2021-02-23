@@ -11,4 +11,5 @@ urlpatterns = [
     (path('comment_post_form', views.comment_post_form, name='comment_post_form')),
     (path('like_comment', views.like_comment, name='like_comment')),
     (path('dislike_comment', views.dislike_comment, name='dislike_comment')),
+    (path('autocomplete_search', views.AutoCompleteSearch.as_view(), name='autocomplete_search')),
 ]

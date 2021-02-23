@@ -160,9 +160,11 @@ btn_dislike.addEventListener("click",function(){
 
 commentForm.addEventListener('submit',function(e){
                                             e.preventDefault()
-
                                             var commentBody = $('#commentBody')
                                             var post_id = this.getAttribute("data-post-id")
+                                            if (commentBody.val() == 0){
+                                            alert('شما نمی توانید نظر خالی ثبت کنید!')
+                                            }else{
                                             const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
                                             $.ajax({
 
@@ -179,18 +181,19 @@ commentForm.addEventListener('submit',function(e){
 
                                              var cb = $("#commentBody")[0]
                                             cb.value=""
-                                            if (data.is_created_comment){
-                                            console.log("کامنت ثبت شد")
-
-
+                                            }
+                                            })
                                             }
 
-                                                }
+
+
                                             })
+
+
                                 
 
 
-})
+
 
 
 function myFunction1(d){
