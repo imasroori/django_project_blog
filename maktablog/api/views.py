@@ -48,6 +48,8 @@ def validate_username(request):
 def like_post(request):
     """
     With GET method ajax get post.id and checking in serializer to toggle it
+    Inputs: Post.id and user.id get from request.user,
+    Outputs: Json that certain state like-dislike post
     """
     post = Post.objects.get(id=request.GET.get('post_id'))
     param = {
@@ -65,6 +67,8 @@ def like_post(request):
 def dislike_post(request):
     """
     With GET method ajax get post.id and checking in serializer to toggle it
+    Inputs: Post.id and user.id that get from request.user,
+    Outputs: Json that certain state like-dislike post
     """
     post = Post.objects.get(id=request.GET.get('post_id'))
 
@@ -84,6 +88,8 @@ def dislike_post(request):
 def star_post(request):
     """
     With GET method ajax get post.id and user.id to star post for loggined user [toggle star-icon]
+    Inputs: Post.id, and user.id that get from request.user,
+    Outputs: Json that certain state stared post or not
     """
     if request.method == 'GET':
         user = User.objects.get(username=request.user)
@@ -105,6 +111,8 @@ def star_post(request):
 def comment_post_form(request):
     """
     With POST method comment form submit. In this view the recieved data updated and pass to serializer
+    Inputs: data from POST => post,text,user.id that get from request.user
+    Outputs: Serializer.data [not impostant becuase in the js if request is success alert with notificatin
     """
     if request.method == 'GET':
         pass
@@ -130,6 +138,8 @@ def comment_post_form(request):
 def like_comment(request):
     """
     Similar to like-post, in this view the comment.id available in GET method and toggle like icon
+    Inputs: Comment.id and user.id that get from request.user,
+    Outputs: Json that certain state like-dislike comment
     """
     comment = Comment.objects.get(id=request.GET.get('comment_id'))
     param = {
@@ -148,6 +158,8 @@ def dislike_comment(request):
     """
     with pass comment.id to serializer check that this comment disliked or not,
     in update method on serializer checked to be like-icon off
+    Inputs: Comment.id and user.id that get from request.user,
+    Outputs: Json that certain state like-dislike comment
     """
     comment = Comment.objects.get(id=request.GET.get('comment_id'))
 
