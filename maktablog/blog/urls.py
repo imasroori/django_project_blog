@@ -2,7 +2,8 @@ from django.urls import path
 
 from . import views
 
-app_name = 'blog'
+app_name = 'blog'  # For use in template tags :=> {% url 'app_name:view_name' %}
+# Routing all pages and requests in blog APP with urlpatterns
 urlpatterns = [
     (path('', views.IndexView.as_view(), name='index')),
     (path('signup', views.signup, name='signup')),

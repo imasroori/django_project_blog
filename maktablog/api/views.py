@@ -1,12 +1,10 @@
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import JsonResponse
-from django.shortcuts import render
 
 from blog.models import *
 
 from rest_framework.decorators import api_view
-from rest_framework.parsers import JSONParser
 
 from blog.serializers import CommentSerializer, LikePostSerializer, DisLikePostSerializer, StarPost, \
     DisLikeCommentSerializer, LikeCommentSerializer, PostSerializer
@@ -15,6 +13,10 @@ from rest_framework.views import APIView
 
 
 class AutoCompleteSearch(APIView):
+    """
+    API for autocomplete search
+    This is incomplete ==> Ignore this API
+    """
 
     def get(self, request):
         query = request.GET.get('query', None)
@@ -32,6 +34,9 @@ class AutoCompleteSearch(APIView):
 
 
 def validate_username(request):
+    """
+    Check username there are in database or not, if username there are in database raise error
+    """
     username = request.GET.get('username', None)
     data = {
         'is_taken': User.objects.filter(username__iexact=username).exists()
@@ -41,29 +46,26 @@ def validate_username(request):
 
 @api_view(['GET'])
 def like_post(request):
-    user = User.objects.get(username=request.user)
+    """
+    With GET method ajax get post.id and checking in serializer to toggle it
+    """
     post = Post.objects.get(id=request.GET.get('post_id'))
     param = {
-        # 'user': user.id,
         'post': post.id,
 
     }
-
-    print(request.GET.get('post_id'))
     serializer = LikePostSerializer(post, data=param)
-    # print(request.data)
-
     if serializer.is_valid():
-        result = serializer.save(user_id=request.user.id)
-        print("serializer", result)
-
+        result = serializer.save(user_id=request.user.id)  # pass user.id to serializer,available in validated_data
         return Response(result)
     return Response(serializer.errors, status=400)
 
 
 @api_view(['GET'])
 def dislike_post(request):
-    user = User.objects.get(username=request.user)
+    """
+    With GET method ajax get post.id and checking in serializer to toggle it
+    """
     post = Post.objects.get(id=request.GET.get('post_id'))
 
     param = {
@@ -72,8 +74,7 @@ def dislike_post(request):
     serializer = DisLikePostSerializer(post, data=param)
 
     if serializer.is_valid():
-        result = serializer.save(user_id=request.user.id)
-        print("serializer", result)
+        result = serializer.save(user_id=request.user.id)  # pass user.id to serializer,available in validated_data
 
         return Response(result)
     return Response(serializer.errors, status=400)
@@ -81,29 +82,30 @@ def dislike_post(request):
 
 @api_view(['GET', 'POST'])
 def star_post(request):
+    """
+    With GET method ajax get post.id and user.id to star post for loggined user [toggle star-icon]
+    """
     if request.method == 'GET':
         user = User.objects.get(username=request.user)
         post = Post.objects.get(id=request.GET.get('post_id'))
         param = {
             'user': user.id,
             'post': post.id,
-
         }
 
         serializer = StarPost(post, data=param)
 
         if serializer.is_valid():
-            # print(serializer.data)
-            result = serializer.save(user_id=request.user.id)
-            # print('serializer', serializer.data)
-            # print(result)
-            # print(serializer.data)
+            result = serializer.save(user_id=request.user.id)  # pass user.id to serializer,available in validated_data
             return Response(result)
         return JsonResponse(serializer.errors, status=400)
 
 
 @api_view(['GET', 'POST'])
 def comment_post_form(request):
+    """
+    With POST method comment form submit. In this view the recieved data updated and pass to serializer
+    """
     if request.method == 'GET':
         pass
 
@@ -119,53 +121,43 @@ def comment_post_form(request):
         serializer = CommentSerializer(data=param)
 
         if serializer.is_valid():
-            # print(serializer.data)
             serializer.save()
-            print(serializer)
-            # print(serializer.data)
             return JsonResponse(serializer.data)
         return JsonResponse(serializer.errors, status=400)
 
 
 @api_view(['GET'])
 def like_comment(request):
-    user = User.objects.get(username=request.user)
-    # post = Post.objects.get(id=request.GET.get('post_id'))
+    """
+    Similar to like-post, in this view the comment.id available in GET method and toggle like icon
+    """
     comment = Comment.objects.get(id=request.GET.get('comment_id'))
     param = {
-        # 'user': user.id,
-        # 'post': post.id,
         'comment': comment.id,
-
     }
-
-    # print(request.GET.get('post_id'))
     serializer = LikeCommentSerializer(comment, data=param)
-    # print(request.data)
-
     if serializer.is_valid():
-        result = serializer.save(user_id=request.user.id)
-        print("serializer", result)
-
+        result = serializer.save(
+            user_id=request.user.id)  # user.id passed to serializer and available in validated_data
         return Response(result)
     return Response(serializer.errors, status=400)
 
 
 @api_view(['GET'])
 def dislike_comment(request):
-    user = User.objects.get(username=request.user)
-    # post = Post.objects.get(id=request.GET.get('post_id'))
+    """
+    with pass comment.id to serializer check that this comment disliked or not,
+    in update method on serializer checked to be like-icon off
+    """
     comment = Comment.objects.get(id=request.GET.get('comment_id'))
 
     param = {
-        # 'post': post.id,
         'comment': comment.id,
     }
     serializer = DisLikeCommentSerializer(comment, data=param)
 
     if serializer.is_valid():
         result = serializer.save(user_id=request.user.id)
-        print("serializer", result)
 
         return Response(result)
     return Response(serializer.errors, status=400)

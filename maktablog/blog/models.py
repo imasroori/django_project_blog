@@ -4,26 +4,12 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from tinymce.models import HTMLField
 
-from PIL import Image
-
 
 class UserInfo(models.Model):
-    # first_name = models.CharField('نام', max_length=30, blank=True)
-    # last_name = models.CharField('نام خانوادگی', max_length=30, blank=True)
     alias_name = models.CharField('نام مستعار', max_length=30)
     phone_number = models.CharField('شماره تلفن', max_length=11)
     image = models.ImageField('عکس پروفایل', upload_to='images/', null=True, blank=True)
     user = models.OneToOneField(User, verbose_name='کاربر', on_delete=models.CASCADE)
-
-    # def save(self, *args, **kwargs):
-    #     super().save(*args, **kwargs)
-    #     if self.image:
-    #         img = Image.open(self.image.path)
-    #         if img.mode in ("RGBA", "P"): img = img.convert("RGB")
-    #         if img.height > 50 or img.width > 50:
-    #             output_size = (50, 50)
-    #             img.thumbnail(output_size)
-    #             img.save(self.image.path)
 
     @property
     def image_url(self):
@@ -31,10 +17,9 @@ class UserInfo(models.Model):
             return self.image.url
 
     def __str__(self):
-        return self.user.first_name
+        return self.user.first_name + " " + self.user.last_name
 
     class Meta:
-        # verbose_name = "پروفایل کاربری"
         verbose_name_plural = "پروفایل کاربران"
 
 
@@ -75,7 +60,6 @@ class Category(models.Model):
         return self.category_name
 
     class Meta:
-        # verbose_name = "دسته بندی"
         verbose_name_plural = "دسته بندی ها"
 
 
@@ -86,13 +70,11 @@ class Label(models.Model):
         return self.label_name
 
     class Meta:
-        # verbose_name = "برچسب"
         verbose_name_plural = "برچسب ها"
 
 
 class Post(Text):
     title = models.CharField('عنوان', max_length=30)
-    # star = models.BooleanField('ذخیره کردن', default=False)
     star = models.ManyToManyField(User, verbose_name='ذخیره کردن', null=True, blank=True, related_name="post_star")
     image = models.ImageField('عکس پست', upload_to='post_images/')
     created_at = models.DateTimeField('زمان ایجاد پست', max_length=30, auto_now_add=True)
@@ -100,8 +82,6 @@ class Post(Text):
     activated = models.BooleanField('فعال/غیرفعال', default=False)
     verificated = models.BooleanField('تایید کردن محتوای پست', default=False)
     category = models.ForeignKey(Category, verbose_name='دسته بندی', on_delete=models.CASCADE)
-    # like = models.ForeignKey(Like, verbose_name='پسندیدن/نپسندیدن', on_delete=models.CASCADE)
-    # user = models.ForeignKey(User, verbose_name='کاربر', on_delete=models.CASCADE)
     labelpost = models.ManyToManyField(Label,
                                        through='LabelPost',
                                        through_fields=('post', 'label'),
@@ -115,7 +95,6 @@ class Post(Text):
         return self.text
 
     class Meta:
-        # verbose_name = "پست"
         verbose_name_plural = "پست ها"
         permissions = (
             ("can_verify", "Can verify post"),
@@ -125,21 +104,15 @@ class Post(Text):
 
 
 class Comment(Text):
-    # text = models.TextField('متن نظر')
     pub_date = models.DateTimeField('زمان انتشار', max_length=30, auto_now=True)
-    # date_pub = models.DateTimeField('زمان بروزرسانی پست', max_length=30, auto_now=True)
     created_date = models.DateTimeField('زمان ایجاد', max_length=30, auto_now_add=True)
     verificated = models.BooleanField('تایید کردن محتوای نظر', default=False)
-    # user = models.ForeignKey(User, verbose_name='کاربر', on_delete=models.CASCADE)
     post = models.ForeignKey(Post, verbose_name='پست', on_delete=models.CASCADE)
-
-    # like = models.ForeignKey(Like, verbose_name='پسندیدن/نپسندیدن', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.text
 
     class Meta:
-        # verbose_name = "نظر"
         verbose_name_plural = "نظرات"
         ordering = ['-created_date']
 
@@ -152,5 +125,4 @@ class LabelPost(models.Model):
         return self.post.text
 
     class Meta:
-        # verbose_name = "برچسب-پست"
         verbose_name_plural = "برچسب های پست"

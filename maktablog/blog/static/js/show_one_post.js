@@ -1,4 +1,3 @@
-
 box_type_comment = document.getElementById("box-type-comment")
 btn_like = document.getElementById("like")
 btn_dislike = document.getElementById("dislike")
@@ -204,18 +203,17 @@ function myFunction1(d){
                                     d.setAttribute("data-target","#myModal")
 
                                     }else{
-//                                    var post_id = this.getAttribute("data-post-id")
                                     let commentid = d.getAttribute("data-comment-id")
-//                                    console.log(typeof(comment_id))
+
                                     let vallike = '.val-like-comment-'+ commentid
                                     let valdislike = '.val-dislike-comment-'+ commentid
-//                                    let xlike = $("#like-comment-"+commentid)
+
                                     let xdislike = document.getElementById("dislike-comment-"+commentid)
                                             $.ajax({
                                             type:'GET',
                                             url:'/api/like_comment',
                                             data:{
-//                                            'post_id':post_id,
+
                                             'comment_id':commentid,
                                             },
                                             datatype:'json',
@@ -252,57 +250,52 @@ function myFunction1(d){
 
 }
 function myFunction2(d){
+                        if(d.getAttribute("data-login") == 'loggedout'){
 
+                        d.setAttribute("data-toggle","modal")
+                        d.setAttribute("data-target","#myModal")
 
-                                    if(d.getAttribute("data-login") == 'loggedout'){
+                        }else{
+                        let commentid = d.getAttribute("data-comment-id")
+                        let vallike = '.val-like-comment-'+commentid
+                        let valdislike = '.val-dislike-comment-'+ commentid
+                        let xlike = document.getElementById("like-comment-"+commentid)
 
-                                    d.setAttribute("data-toggle","modal")
-                                    d.setAttribute("data-target","#myModal")
+                                $.ajax({
+                                type:'GET',
+                                url:'/api/dislike_comment',
+                                data:{
+                                'comment_id':commentid,
+                                },
+                                datatype:'json',
+                                success:function(data){
+                                if (data.is_disliked){
+                                console.log("شما این نظر را نپسندیده اید")
+                                let valuedislikescomment = $(valdislike)[0].innerHTML
+                                valuedislikescomment = +valuedislikescomment-1
+                                $(valdislike)[0].innerHTML = valuedislikescomment
+                                d.classList.remove('btn-outline-danger')
 
-                                    }else{
-//                                    var post_id = this.getAttribute("data-post-id")
-                                    let commentid = d.getAttribute("data-comment-id")
-                                    let vallike = '.val-like-comment-'+commentid
-                                    let valdislike = '.val-dislike-comment-'+ commentid
-//                                    let xlike = $("#like-comment-"+commentid)
-                                    let xlike = document.getElementById("like-comment-"+commentid)
+                                }else{
+                                console.log("شما این پست را نپسندیدید")
+                                let valuedislikescomment = $(valdislike)[0].innerHTML
+                                valuedislikescomment = +valuedislikescomment+1
+                                $(valdislike)[0].innerHTML = valuedislikescomment
+                                d.classList.add('btn-outline-danger')
 
-                                            $.ajax({
-                                            type:'GET',
-                                            url:'/api/dislike_comment',
-                                            data:{
-//                                            'post_id':post_id,
-                                            'comment_id':commentid,
-                                            },
-                                            datatype:'json',
-                                            success:function(data){
-                                            if (data.is_disliked){
-                                            console.log("شما این نظر را نپسندیده اید")
-                                            let valuedislikescomment = $(valdislike)[0].innerHTML
-                                            valuedislikescomment = +valuedislikescomment-1
-                                            $(valdislike)[0].innerHTML = valuedislikescomment
-                                            d.classList.remove('btn-outline-danger')
-
-                                            }else{
-                                            console.log("شما این پست را نپسندیدید")
-                                            let valuedislikescomment = $(valdislike)[0].innerHTML
-                                            valuedislikescomment = +valuedislikescomment+1
-                                            $(valdislike)[0].innerHTML = valuedislikescomment
-                                            d.classList.add('btn-outline-danger')
-
-                                                if(data.is_in_liked){
-                                                xlike.classList.remove('btn-outline-success')
-                                                let valuelikescomment = $(vallike)[0].innerHTML
-                                                valuelikescomment = +valuelikescomment-1
-                                                $(vallike)[0].innerHTML = valuelikescomment
-                                                }
-                                            }
-
-                                                }
-                                            })
-
+                                    if(data.is_in_liked){
+                                    xlike.classList.remove('btn-outline-success')
+                                    let valuelikescomment = $(vallike)[0].innerHTML
+                                    valuelikescomment = +valuelikescomment-1
+                                    $(vallike)[0].innerHTML = valuelikescomment
+                                    }
+                                }
 
                                     }
+                                })
+
+
+                        }
 
 
 }

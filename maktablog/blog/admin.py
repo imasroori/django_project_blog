@@ -43,10 +43,31 @@ class CommentInline(admin.StackedInline):
 class CommentAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ('user', 'post')}),
-        ("جزئیات نظر", {'fields': ('text', 'verificated', 'pub_date')}),
+        ("جزئیات نظر", {'fields': ('return_title_post', 'text', 'verificated', 'pub_date')}),
     )
     # inlines = [PostInline]
+    list_display = ['user', 'return_title_post', 'verificated']
     readonly_fields = ['user', 'pub_date']
+
+    def return_title_post(self, obj):
+        return obj.post.title
+
+    def has_module_permission(self, request):
+        if request.user.has_perm('blog.can_verify'):
+            return True
+        else:
+            return False
+
+    def make_verify_comment(self, request, queryset):
+        if not request.user.has_perm('blog.can_verify'):
+            return self.message_user(request, "شما دسترسی لازم را ندارید!", level=messages.ERROR)
+        queryset.update(verificated=True)
+        return self.message_user(request,
+                                 "{} نظر با موفقیت تایید شد.".format(queryset.count()))
+
+    make_verify_comment.short_description = "تایید کردن نظرات انتخابی"
+
+    actions = [make_verify_comment]
 
 
 class PostAdmin(admin.ModelAdmin):
@@ -67,11 +88,11 @@ class PostAdmin(admin.ModelAdmin):
         return obj.dislikes.count()
 
     def num_comments(self, obj):
-        return obj.comment_set.count()
+        return obj.comment_set.count() , obj.comment_set.all().filter(verificated=True).count()
 
     num_likes.short_description = 'تعداد پسندیدن'
     num_dislikes.short_description = 'تعداد نپسندیدن'
-    num_comments.short_description = 'تعداد نظرات'
+    num_comments.short_description = 'تعداد نظرات/تایید شده'
     list_display = ['title', 'user', 'activated', 'verificated', 'num_likes', 'num_dislikes', 'num_comments',
                     'show_link_comments', ]
     list_display_links = ('title', 'show_link_comments',)
