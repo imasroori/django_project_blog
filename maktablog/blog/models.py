@@ -15,15 +15,15 @@ class UserInfo(models.Model):
     image = models.ImageField('عکس پروفایل', upload_to='images/', null=True, blank=True)
     user = models.OneToOneField(User, verbose_name='کاربر', on_delete=models.CASCADE)
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        if self.image:
-            img = Image.open(self.image.path)
-            if img.mode in ("RGBA", "P"): img = img.convert("RGB")
-            if img.height > 50 or img.width > 50:
-                output_size = (50, 50)
-                img.thumbnail(output_size)
-                img.save(self.image.path)
+    # def save(self, *args, **kwargs):
+    #     super().save(*args, **kwargs)
+    #     if self.image:
+    #         img = Image.open(self.image.path)
+    #         if img.mode in ("RGBA", "P"): img = img.convert("RGB")
+    #         if img.height > 50 or img.width > 50:
+    #             output_size = (50, 50)
+    #             img.thumbnail(output_size)
+    #             img.save(self.image.path)
 
     @property
     def image_url(self):

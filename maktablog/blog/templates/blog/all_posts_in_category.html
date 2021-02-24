@@ -1,46 +1,18 @@
 {% extends "base.html" %}
 {% load custom_tags %}
+
 {% block content %}
 {% if post_in_category %}
 <div class="container text-right">
     <div class="row pt-5">
 
-        <div class="col-3">
 
 
-            <div class="card border-secondary mb-3" style="max-width: 18rem;">
-                <div class="card-header">دسته بندی مطالب</div>
-                <div class="card-body text-secondary">
-                    <ul class="list-unstyled p-0">
 
-                        {% for c in categories %}
-
-                        {% if c.category %}
-                        {% if not c.category.category %}
-                        <ul class="list-unstyled pr-3">
-                            <li><a href="{% url 'blog:posts_in_category' c.id %}"> {{c }}</a></li>
-                        </ul>
-                        {% else %}
-                        <ul class="list-unstyled pr-5">
-                            <li><a href="{% url 'blog:posts_in_category' c.id %}"> {{c }}</a></li>
-                        </ul>
-                        {% endif %}
-
-                        {% else %}
-                        <li><a href="{% url 'blog:posts_in_category' c.id %}"> {{c }}</a></li>
-                        {% endif %}
-
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="col-9">
+        <div class="col-12">
 
             {% for item in post_in_category.post_set.all %}
-            {% if item.activation and item.verification %}
+            {% if item.activated and item.verificated %}
             <div class="card mb-3">
                 <a class="text-decoration-none" href="{% url 'blog:show_post' item.id %}">
                     <div class="row">

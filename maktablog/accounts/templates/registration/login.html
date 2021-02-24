@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% load bootstrap %}
-
+{% block sidebar %} {% endblock %}
 {% block content %}
-<div class="container text-right w-25 mt-2" style="height:50vh">
+<div class="container text-right w-50 mt-2" style="height:60vh">
 
     <form class="" action="{% url 'login' %}" method="POST">
         {% csrf_token %}

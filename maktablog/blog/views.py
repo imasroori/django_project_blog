@@ -67,6 +67,7 @@ class PostsinLabel(generic.DetailView):
     model = Label
     context_object_name = 'post_in_label'
 
+
     def get_context_data(self, **kwargs):
         context = super(PostsinLabel, self).get_context_data(**kwargs)
         context['categories'] = Category.objects.all()

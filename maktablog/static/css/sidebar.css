@@ -1,0 +1,113 @@
+/* Style the links inside the sidenav */
+
+
+#mySidenav a {
+  position: absolute; /* Position them relative to the browser window */
+  left: -50px; /* Position them outside of the screen */
+  transition: 0.3s; /* Add transition on hover */
+  padding: 15px; /* 15px padding */
+  width: 70px; /* Set a specific width */
+  text-decoration: none; /* Remove underline */
+  font-size: 20px; /* Increase font size */
+  color: white; /* White text color */
+  border-radius: 0 5px 5px 0; /* Rounded corners on the top right and bottom right side */
+}
+
+#mySidenav a:hover {
+  left: -10px; /* On mouse-over, make the elements appear as they should */
+}
+#mySidenav2 div {
+  position: absolute; /* Position them relative to the browser window */
+  right: -80px; /* Position them outside of the screen */
+  transition: 0.3s; /* Add transition on hover */
+  padding: 5px; /* 15px padding */
+  width: 200px; /* Set a specific width */
+  text-decoration: none; /* Remove underline */
+  font-size: 20px; /* Increase font size */
+  color: white; /* White text color */
+  border-radius: 5px 0 0 5px; /* Rounded corners on the top right and bottom right side */
+}
+
+#mySidenav2 div:hover {
+  right: -10px; /* On mouse-over, make the elements appear as they should */
+}
+
+#about2 {
+  top: 0px;
+  background-color: #4CAF50;
+}
+/* The about link: 20px from the top with a green background */
+#about  {
+  top: 20px;
+  background-color: #4CAF50;
+}
+
+#blog {
+  top: 90px;
+  background-color: #2196F3; /* Blue */
+}
+
+#projects {
+  top: 160px;
+  background-color: #f44336; /* Red */
+}
+
+#contact {
+  top: 230px;
+  background-color: #555 /* Light Black */
+}
+
+
+//////////////////////////////////////////
+
+
+section {
+  background: #E4E4E6;
+  padding: 6rem 3rem;
+  margin: 0px;
+}
+
+.hamburger {
+
+  //position: absolute;
+ // margin: 50px;
+  z-index: 2;
+  cursor: pointer;
+}
+
+.line {
+  width: 50px;
+  height: 6px;
+  background: #BCAD90;
+  margin-bottom: 5px;
+}
+
+.menu {
+  width: 220px;
+  //height: 100%;
+  background: #BCAD90;
+  position: absolute;
+  top: 0;
+  right: -200px;
+  transition: right .1s;
+}
+
+.menu-item:first-child {
+  margin-top: 0px;
+}
+
+.menu--open {
+  right: 0;
+}
+
+.menu-item {
+  color: #fff;
+  width: 100%;
+  padding: 1rem 3rem;
+  box-sizing: border-box;
+}
+
+.menu-item:hover {
+  background: #91966E;
+  cursor: pointer;
+}
