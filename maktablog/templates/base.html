@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/font_style.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/sidebar.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/persianDatepicker-dark.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
@@ -92,7 +93,7 @@
                     <div class="row mt-3 align-items-center">
 
                         <div class="col-auto mr-5 ml-5">
-                            <input type="text" id="date-start" name="date-start" class="form-control"
+                            <input type="text" id="elementId" name="date-start" class="elementClass form-control"
                                    placeholder="از تاریخ">
                         </div>
 
@@ -146,7 +147,8 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link h5" href="{% url 'blog:show_all_categories' %}">دسته بندی ها</a>
-                </li> <li class="nav-item">
+                </li>
+                <li class="nav-item">
                     <a class="nav-link text-warning" href="{% url 'blog:show_all_categories' %}">درباره ما</a>
                 </li>
                 <li class="nav-item">
@@ -174,7 +176,8 @@
                         پروفایل کاربری
                     </a>
 
-                    <div style="background-color:rgba(150,150,150,0.95)" class="dropdown-menu text-right" aria-labelledby="dropdownMenuLink">
+                    <div style="background-color:rgba(150,150,150,0.95)" class="dropdown-menu text-right"
+                         aria-labelledby="dropdownMenuLink">
                         <span class="dropdown-item text-warning border-bottom">{{user.first_name}} {{user.last_name}}</span>
                         {% if perms.blog.add_post %}
 
@@ -309,8 +312,12 @@
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/base_side.js' %}"></script>
+<script src="{% static 'js/persianDatepicker.js' %}"></script>
 
+<script>
+        $("#elementId, .elementClass").persianDatepicker();
 
+</script>
 {% block js %}
 {% endblock %}
 
