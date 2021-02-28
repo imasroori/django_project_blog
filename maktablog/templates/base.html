@@ -14,6 +14,7 @@
 
 </head>
 
+
 <body class="bg-light" dir="rtl">
 <div class="row p-2 justify-content-between pl-5 pr-5 mb-0 ml-0 mr-0 align-items-center"
      style="background-color:rgb(65,118,144)"
@@ -51,24 +52,6 @@
             </form>
         </div>
 
-        <!--        <div class="input-group">-->
-
-        <!--            <div class="form-outline">-->
-
-        <!--                <input type="search" autocomplete="on" id="form1" class="form-control form-control-lg" width="100px"-->
-        <!--                       placeholder="عبارت مورد نظر را جستجو کنید ..."/>-->
-
-        <!--            </div>-->
-        <!--            <div class="d-flex justify-content-between">-->
-        <!--                <a href="{% url 'blog:search' %}" style="margin-right:-50px; margin-left:2px" type="button"-->
-        <!--                   class="btn">-->
-        <!--                    <i class="fa fa-search fa-2x"></i>-->
-        <!--                </a>-->
-
-        <!--            </div>-->
-        <div>
-
-        </div>
     </div>
 
 
@@ -163,6 +146,11 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link h5" href="{% url 'blog:show_all_categories' %}">دسته بندی ها</a>
+                </li> <li class="nav-item">
+                    <a class="nav-link text-warning" href="{% url 'blog:show_all_categories' %}">درباره ما</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-danger" href="{% url 'blog:show_all_categories' %}">راهنما و قوانین</a>
                 </li>
 
 
@@ -177,7 +165,7 @@
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
                         {% if user.userinfo.image %}
-                        <img style="width:40px;height:40px" class="rounded-circle" src="/media/{{user.userinfo.image}}">
+                        <img style="width:35px;height:35px" class="rounded-circle" src="/media/{{user.userinfo.image}}">
                         {% else %}
                         <img style="width:40px;height:40px" class="rounded-circle"
                              src="/media/images/default-avatar.jpg">
@@ -186,8 +174,8 @@
                         پروفایل کاربری
                     </a>
 
-                    <div class="dropdown-menu bg-success text-right" aria-labelledby="dropdownMenuLink">
-                        <span class="dropdown-item text-mute border-bottom">{{user.first_name}} {{user.last_name}}</span>
+                    <div style="background-color:rgba(150,150,150,0.95)" class="dropdown-menu text-right" aria-labelledby="dropdownMenuLink">
+                        <span class="dropdown-item text-warning border-bottom">{{user.first_name}} {{user.last_name}}</span>
                         {% if perms.blog.add_post %}
 
                         <a class="dropdown-item" href="\admin">پنل مدیریت</a>
@@ -210,60 +198,81 @@
         {% endblock %}
 
     </nav>
-    <div id="mySidenav2 " class="hamburger sidenav" style="position:absolute;">
+    <div id="side_category" class="hamburger" style="position:absolute;">
         {% block sidebar %}
         <div style="position:relative;">
-
-            <div style="position:relative" class="p-2" id="about2"><i class="fa fa-list-alt fa-2x"></i>
-
-            </div>
 
 
             <div style="position:absolute" class="text-right" id="sidebar">
 
                 <div style="z-index:1;" class="menu">
 
-                    <ul class="list-unstyled p-0">
+                    <div style="background-color:rgb(180,11,44)" class="text-warning card">
+                        <div style="border:1px solid red" class="bg-danger card-header h4">دسته بندی مطالب</div>
+                        <ul class="pt-3 pb-3 p-2" style="list-style-type: none;" dir="rtl" id="myUL">
+                            {% for c in categories %}
 
-                        {% for c in categories %}
+                            {% if not c.category %}
+                            <li class="p-2"><span class="h5 caret">{{c.category_name}}</span>
+                                {% if c.category_sub.all %}
+                                <ul style="list-style-type: none;" class="nested">
+                                    {% for c2 in c.category_sub.all %}
 
-                        {% if c.category %}
-                        {% if not c.category.category %}
-                        <ul class="menu-item list-unstyled pr-3">
-                            <li><a href="{% url 'blog:posts_in_category' c.id %}"> {{c }}</a></li>
+                                    {% if not c2.category_sub.all %}
+                                    <li><a class="h5 text-decoration-none"
+                                           href="{% url 'blog:posts_in_category' c2.id %}">{{c2.category_name}}</a></li>
+                                    {% else %}
+                                    <li class="p-2"><span class="h5 caret">{{c2.category_name}}</span>
+                                        <ul style="list-style-type: none;" class="nested">
+                                            {% for c3 in c2.category_sub.all %}
+                                            {% if not c3.category_sub.all %}
+                                            <li>
+                                                <a class="h5 text-decoration-none"
+                                                   href="{% url 'blog:posts_in_category' c3.id %}">{{c3.category_name}}</a>
+                                            </li>
+                                            {% else %}
+                                            <li class="p-2"><span class="h5 caret"><a class="text-decoration-none"
+                                                                                      href="{% url 'blog:posts_in_category' c3.id %}">{{c3.category_name}}</a></span>
+                                                {% endif %}
+                                                {% endfor %}
+
+
+                                        </ul>
+
+                                    </li>
+                                    {% endif %}
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </li>
+                            {% endif %}
+                            {% endfor %}
                         </ul>
-                        {% else %}
-                        <ul class="menu-item list-unstyled pr-5">
-                            <li><a href="{% url 'blog:posts_in_category' c.id %}"> {{c }}</a></li>
-                        </ul>
-                        {% endif %}
 
-                        {% else %}
-                        <li class="menu-item"><a href="{% url 'blog:posts_in_category' c.id %}"> {{c }}</a></li>
-                        {% endif %}
 
-                        {% endfor %}
-                    </ul>
+                    </div>
+
                 </div>
 
             </div>
 
         </div>
         {% endblock %}
+
+
     </div>
 
 </div>
 
 
-<div style="position:relative;z-index:1">
-    <div style="position:fixed;left:10px" id="mySidenav" class="sidenav">
+<div class="mt-5" style="position:relative;z-index:1">
+    <div style="position:fixed;left:10px" id="mySidenav">
         <a class="" href="#" id="about"><i class="fa fa-instagram fa-2x"></i></a>
         <a class="" href="#" id="blog"><i class="fa fa-telegram fa-2x"></i></a>
         <a class="" href="#" id="projects"><i class="fa fa-youtube fa-2x"></i></a>
         <a class="" href="#" id="contact"><i class="fa fa-skype fa-2x"></i></a>
     </div>
 </div>
-
 
 
 <div class="container-fluid">
@@ -290,6 +299,7 @@
     </div>
 </div>
 
+
 <div class="text-center p-3 mt-5" style="background-color: rgba(0, 0, 0, 0.2)">
     {% block footer %}
     © کلیه حقوق این سایت متعلق به گروه وبلاگ سخن است.
@@ -298,8 +308,8 @@
 
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
-<script src="{% static 'js/base_search.js' %}"></script>
 <script src="{% static 'js/base_side.js' %}"></script>
+
 
 {% block js %}
 {% endblock %}

@@ -30,13 +30,6 @@ def update_userinfo_signal(sender, instance, created, **kwargs):
     instance.userinfo.save()
 
 
-class MyModel(models.Model):
-    content = HTMLField()
-
-    def __str__(self):
-        return self.content
-
-
 class Text(models.Model):
     text = models.TextField("متن")
     likes = models.ManyToManyField(User,
@@ -52,8 +45,9 @@ class Text(models.Model):
 
 
 class Category(models.Model):
-    category_name = models.CharField('دسته بندی', max_length=30)
-    category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='category_sub', null=True,
+    category_name = models.CharField('نام دسته بندی', max_length=30)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='زیرمجموعه',
+                                 related_name='category_sub', null=True,
                                  blank=True)
 
     def __str__(self):
@@ -79,10 +73,10 @@ class Post(Text):
     image = models.ImageField('عکس پست', upload_to='post_images/')
     created_at = models.DateTimeField('زمان ایجاد پست', max_length=30, auto_now_add=True)
     updated_at = models.DateTimeField('زمان بروزرسانی پست', max_length=30, auto_now=True)
-    activated = models.BooleanField('فعال/غیرفعال', default=False)
-    verificated = models.BooleanField('تایید کردن محتوای پست', default=False)
+    activated = models.BooleanField('فعال شده', default=False)
+    verificated = models.BooleanField('تاییدشده', default=False)
     category = models.ForeignKey(Category, verbose_name='دسته بندی', on_delete=models.CASCADE)
-    labelpost = models.ManyToManyField(Label,
+    labelpost = models.ManyToManyField(Label, verbose_name='برچسب',
                                        through='LabelPost',
                                        through_fields=('post', 'label'),
 
@@ -106,7 +100,7 @@ class Post(Text):
 class Comment(Text):
     pub_date = models.DateTimeField('زمان انتشار', max_length=30, auto_now=True)
     created_date = models.DateTimeField('زمان ایجاد', max_length=30, auto_now_add=True)
-    verificated = models.BooleanField('تایید کردن محتوای نظر', default=False)
+    verificated = models.BooleanField('تاییدشده', default=False)
     post = models.ForeignKey(Post, verbose_name='پست', on_delete=models.CASCADE)
 
     def __str__(self):

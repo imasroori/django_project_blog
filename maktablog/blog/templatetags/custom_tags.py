@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import khayyam
 from django import template
@@ -8,8 +8,9 @@ register = template.Library()
 
 
 def convert_to_jdate(value):
-    return JalaliDatetime(datetime(value.year, value.month, value.day, value.hour, value.minute,
-                                   value.second, 821830, TehranTimezone())).strftime('%C')
+    return JalaliDatetime(datetime(value.year, month=value.month, day=value.day, hour=value.hour, minute=value.minute,
+                                   second=value.second, microsecond=value.microsecond,
+                                   tzinfo=TehranTimezone())+timedelta(hours=3, minutes=30)).strftime('%C')
 
 
 def count_verify_comments(value):

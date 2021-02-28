@@ -2,28 +2,25 @@ $(document).ready(function(){
 
   var menu = $(".menu");
   var hamburger = $(".hamburger");
-  var line = $(".line");
   var menuOpen;
 
   function openMenu(){
     menu.css("right", "0px");
-    line.css("background", "#FFF");
     menuOpen = true;
   }
 
   function closeMenu(){
-    menu.css("right", "-320px");
-    line.css("background", "#BCAD90");
+    menu.css("right", "-200px");
     menuOpen = false;
   }
 
-  function toggleMenu(){
-    if (menuOpen) {
-      closeMenu();
-    } else {
-      openMenu();
-    }
-  }
+//  function toggleMenu(){
+//    if (menuOpen) {
+//      closeMenu();
+//    } else {
+//      openMenu();
+//    }
+//  }
 
   hamburger.on({
     mouseenter: function(){
@@ -44,6 +41,14 @@ $(document).ready(function(){
     }
   })
 
+var toggler = document.getElementsByClassName("caret");
+var i;
 
+for (i = 0; i < toggler.length; i++) {
+  toggler[i].addEventListener("click", function() {
+    this.parentElement.querySelector(".nested").classList.toggle("active");
+    this.classList.toggle("caret-down");
+  });
+}
 
 });

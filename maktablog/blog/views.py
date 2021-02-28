@@ -162,7 +162,7 @@ class PopularPosts(generic.ListView):
     context_object_name = 'posts'
 
     def get_queryset(self):
-        return Post.objects.all().filter(activation=True)
+        return Post.objects.all().filter(activated=True)
 
 
 class NewestPosts(generic.ListView):
@@ -172,6 +172,11 @@ class NewestPosts(generic.ListView):
 
     def get_queryset(self):
         return Post.objects.all().filter(title__contains='برف')
+
+    def get_context_data(self, **kwargs):
+        context = super(NewestPosts, self).get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
 
 def signup(request):

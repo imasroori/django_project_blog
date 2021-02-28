@@ -2,11 +2,9 @@
 {% load custom_tags %}
 
 {% block content %}
-{% if post_in_category %}
+{% if post_in_category.post_set.all %}
 <div class="container text-right">
-    <div class="row pt-5">
-
-
+    <div class="row pt-5 pb-5 mb-5">
 
 
         <div class="col-12">
@@ -42,6 +40,10 @@
     </div>
 </div>
 {% else %}
-<p>nist</p>
+<div class="text-right mt-5 mb-5 col-12">
+    <div class="alert alert-info p-4 m-5">
+        هنوز هیچ پستی برای این دسته بندی ثبت نشده است
+    </div>
+</div>
 {% endif %}
 {% endblock %}
