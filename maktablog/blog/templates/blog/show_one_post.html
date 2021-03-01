@@ -44,7 +44,7 @@
             <div class="row text-right m-2 ml-5 pr-5" id="labels">
 
                 {% for item in post_detail.post.all %}
-                <div class="d-inline-block  m-1 p-1">
+                <div class="d-inline  m-1 p-1">
 
                     <a class="p-2 h7 hover-overlay shadow rounded text-decoration-none"
                        onMouseOver="this.style.color='#990000';this.style.backgroundColor='#ffcccc'"
@@ -58,21 +58,23 @@
 
             </div>
 
-            <div class="ml-5 pl-2">
-
-                <button data-login="{% if user.is_authenticated %}loggedin{% else %}loggedout{% endif %}" id="like"
-                        type="button" data-post-id="{{post_detail.id}}"
-                        class="btn {% if user in post_detail.likes.all %}{{'btn-outline-success'}}{% endif %} btn-lg px-2 wave-effect m-2">
-                    <span class="value-likes">{{post_detail.likes.count}}</span>
-                    <i class="fa fa-thumbs-up ml-1 fa-2x"></i>
-                </button>
-                <button data-login="{% if user.is_authenticated %}loggedin{% else %}loggedout{% endif %}"
-                        id="dislike" type="button" data-post-id="{{post_detail.id}}"
-                        class="btn {% if user in post_detail.dislikes.all %}{{'btn-outline-danger'}}{% endif %} btn-lg px-2  m-2">
-                    <span class="value-dislikes">{{post_detail.dislikes.count}}</span>
-                    <i class="fa fa-thumbs-down ml-1 fa-2x"></i>
-                </button>
-
+            <div class="d-flex justify-content-end  ml-5 pl-2">
+                <div>
+                    <button data-login="{% if user.is_authenticated %}loggedin{% else %}loggedout{% endif %}" id="like"
+                            type="button" data-post-id="{{post_detail.id}}"
+                            class="btn {% if user in post_detail.likes.all %}{{'btn-outline-success'}}{% endif %} btn-lg px-2 wave-effect m-2">
+                        <span class="value-likes">{{post_detail.likes.count}}</span>
+                        <i class="fa fa-thumbs-up ml-1 fa-2x"></i>
+                    </button>
+                </div>
+                <div>
+                    <button data-login="{% if user.is_authenticated %}loggedin{% else %}loggedout{% endif %}"
+                            id="dislike" type="button" data-post-id="{{post_detail.id}}"
+                            class="btn {% if user in post_detail.dislikes.all %}{{'btn-outline-danger'}}{% endif %} btn-lg px-2  m-2">
+                        <span class="value-dislikes">{{post_detail.dislikes.count}}</span>
+                        <i class="fa fa-thumbs-down ml-1 fa-2x"></i>
+                    </button>
+                </div>
 
             </div>
         </div>
@@ -89,10 +91,10 @@
                                 <div class="text-muted p-1 rounded" id="box-type-comment"
                                      data-login="{% if user.is_authenticated %}loggedin{% else %}loggedout{% endif %}">
                                     {% if user.is_authenticated %}
-                                    <img style="width:50px;height:50px" class="rounded-circle m-2"
+                                    <img style="width:40px;height:40px" class="rounded-circle m-2"
                                          src="/media/{{user.userinfo.image}}">
                                     {% else %}
-                                    <img style="width:50px;height:50px" class="rounded-circle m-2"
+                                    <img style="width:40px;height:40px" class="rounded-circle m-2"
                                          src="/media/images/default-avatar.jpg">
                                     {% endif %}
 
@@ -186,7 +188,7 @@
                                         <div class="d-flex justify-content-between mr-4 mt-3">
 
                                             <div class="ml-3">
-                                                <img style="width:50px;height:50px" class="rounded-circle"
+                                                <img style="width:45px;height:45px" class="rounded-circle"
                                                      src="/media/{{comment.user.userinfo.image}}" alt="">
                                             </div>
                                             <div class="d-flex">
@@ -224,9 +226,6 @@
 
                                         </div>
 
-                                        <div class="text-secondary small mr-3 mb-3"><span
-                                                class="small"> زمان انتشار </span>{{comment.pub_date|convert_to_jdate}}
-                                        </div>
                                     </div>
                                     {% endif %}
                                     {% endfor %}

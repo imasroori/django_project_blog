@@ -3,8 +3,13 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.db.models import Value as V
+from django.db.models.functions import Concat
 from django.shortcuts import render, redirect
 from django.views import generic
+from khayyam import JalaliDate
+from persiantools import jdatetime
+
 from .forms import SignUpForm, UserUpdateForm, UserInfoUpdateForm
 from .models import Post, Category, Label
 
@@ -23,28 +28,44 @@ class SearchPostView(generic.ListView):
         query = request.GET.get('query', None)
         if query:
             print(query)
-            qs = Post.objects.all().filter(
+            qs = Post.objects.annotate(full_name=Concat('user__first_name', V(' '), 'user__last_name')).filter(
                 Q(title__regex=r'^.*{}.*'.format(query)) | Q(text__regex=r'^.*{}.*'.format(query)) | Q(
                     labelpost__label_name__regex=r'^.*{}.*'.format(query)) | Q(
-                    user__username__regex=r'^.*{}.*'.format(query))).distinct()
+                    full_name__regex=r'^.*{}.*'.format(query))).distinct()
+            context = {
+                'posts': qs,
+            }
+            return render(request, self.template_name, context)
+        elif (request.GET.get('title', None) or request.GET.get('text', None) or
+              request.GET.get('writer', None) or request.GET.get('label', None) or
+              request.GET.get('date-start', None) or request.GET.get('date-end', None)):
+            q_title = request.GET.get('title', None)
+            q_text = request.GET.get('text', None)
+            q_writer = request.GET.get('writer', None)
+            q_label = request.GET.get('label', None)
+            qs = Post.objects.annotate(full_name=Concat('user__first_name', V(' '), 'user__last_name')).filter(
+                Q(title__regex=q_title) & Q(text__regex=q_text) & Q(
+                    labelpost__label_name__regex=q_label) & Q(
+                    full_name__regex=q_writer)).distinct()
+            s_date = request.GET.get('date-start', None)
+            e_date = request.GET.get('date-end', None)
+            if s_date:
+                strt_date = s_date.split('/')
+                from_date = JalaliDate(int(strt_date[0]), int(strt_date[1]), int(strt_date[2])).todate()
+                qs = qs.filter(Q(created_at__gte=from_date))
+
+            if e_date:
+                end_date = e_date.split('/')
+                to_date = JalaliDate(int(end_date[0]), int(end_date[1]), int(end_date[2])).todate()
+                qs = qs.filter(Q(created_at__lte=to_date))
+
             context = {
                 'posts': qs,
             }
             return render(request, self.template_name, context)
         else:
-            q_title = request.GET.get('title', None)
-            q_text = request.GET.get('text', None)
-            q_writer = request.GET.get('writer', None)
-            q_label = request.GET.get('label', None)
-            # q_label=request.GET.get('label',None)
-            qs = Post.objects.all().filter(
-                Q(title__icontains=q_title) & Q(text__icontains=q_text) & Q(
-                    labelpost__label_name__icontains=q_label) & Q(
-                    user__username__icontains=q_writer)).distinct()
-            context = {
-                'posts': qs,
-            }
-            return render(request, self.template_name, context)
+            messages.add_message(request, messages.WARNING, 'لطفا در محل جستجو چیزی وارد کنید.')
+            return render(request, self.template_name, {'posts': [""]})
 
 
 class ShowAllCategories(generic.ListView):
@@ -212,7 +233,7 @@ def signup(request):
 
             user = authenticate(username=username, password=password)
             login(request, user)
-            messages.add_message(request, messages.SUCCESS, 'شما با موفقیت ثبت نام کردید، خوش آمدید')
+            messages.add_message(request, messages.SUCCESS, 'ثبت نام شما با موفقیت انجام شد، خوش آمدید')
             return redirect("/blog/")
 
         else:

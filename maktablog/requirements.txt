@@ -7,3 +7,4 @@ djangorestframework
 PIL
 pygments
 django-filter
+persiantools
