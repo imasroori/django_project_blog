@@ -47,7 +47,7 @@ Go to maktablog directory and in terminal:
 ...\maktablog> python manage.py runserver
 ```
 
-<img src="C:\Users\Iman\Desktop\MaktabSharif_Python\Project3\Solution_blog\django_project_blog\maktablog\media\default\comment.png" width="250" height="250"> <img src="maktablog/media/default/comment.png" width="250" height="250">
+
 
  ![Image description](maktablog/media/default/comment.png)
 
