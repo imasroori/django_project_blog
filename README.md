@@ -1,6 +1,7 @@
 
-# Blog :: Django Project
-
+# Blog :: Django Project :iran:
+![Django](https://img.shields.io/badge/django-blog-green) ![HTML](https://img.shields.io/badge/HTML-blog-red) ![CSS](https://img.shields.io/badge/CSS-blog-blue)
+![JS](https://img.shields.io/badge/JS-blog-orange) ![BOOTSTRAP](https://img.shields.io/badge/Bootstrap-blog-purple)
 ## Table of contents
 * [General info](#general-info)
 * [Technologies](#technologies)
@@ -12,15 +13,15 @@ This project is 3rd project in MaktabSharif Bootcamp that Python [+django framew
 This project is a Blog that on users can write post and like or dislike posts and write comment for each post.
 
 There are two type of users in this site:
-* Anonymous users
-* Authenticated users
+* _Anonymous users_
+* _Authenticated users_
 
 Authenticated users in this site are divided into 4 groups with special permissions. this groups are:
 
-* Simple group: Permissions for this group >>> can view posts, comments, like, dislike and star posts.[default authenticated users]
-* Writer group: In addition to the previous group permissions, this group is allowed to write posts in site categories and add tags.
-* Editor group: In addition to the previous group permissions, this group can edit, verify and activate posts and comments. 
-* Manager group: this group of users have all permissions.[similar to superuser]
+* __Simple group__: Permissions for this group >>> can view posts, comments, like, dislike and star posts.[default authenticated users]
+* __Writer group__: In addition to the previous group permissions, this group is allowed to write posts in site categories and add tags.
+* __Editor group__: In addition to the previous group permissions, this group can edit, verify and activate posts and comments. 
+* __Manager group__: this group of users have all permissions.[similar to superuser]
 
 
 Some examples of photos from the blog site are displayed below:
@@ -56,7 +57,7 @@ Go to maktablog directory and in terminal:
 ```
 
 
-##### Good Luck!
+##### Good Luck! :v::sunglasses:
 
 
 
