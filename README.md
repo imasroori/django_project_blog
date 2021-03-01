@@ -48,8 +48,8 @@ Go to maktablog directory and in terminal:
 ```
 
 
-
- ![Image description](maktablog/media/default/comment.png)
+<img src="maktablog/media/default/main_page.png" width="425" height="425"> <img src="maktablog/media/default/main_page.png" width="425" height="425">
+<img src="maktablog/media/default/main_page.png" width="425" height="425"> <img src="maktablog/media/default/main_page.png" width="425" height="425">
 
 ##### Good Luck!
 
