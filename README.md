@@ -21,6 +21,12 @@ Authenticated users in this site are divided into 4 groups with special permissi
 * Writer group: In addition to the previous group permissions, this group is allowed to write posts in site categories and add tags.
 * Editor group: In addition to the previous group permissions, this group can edit, verify and activate posts and comments. 
 * Manager group: this group of users have all permissions.[similar to superuser]
+
+
+Some examples of photos from the blog site are displayed below:
+<img src="maktablog/media/default/main_page.png"> <img src="maktablog/media/default/categories.png">
+<img src="maktablog/media/default/post1.png"> <img src="maktablog/media/default/tagsLike.png"> <img src="maktablog/media/default/comment.png"> 
+
 ## Technologies
 Project is created with:
 * Python: 3.8
@@ -47,9 +53,6 @@ Go to maktablog directory and in terminal:
 ...\maktablog> python manage.py runserver
 ```
 
-
-<img src="maktablog/media/default/main_page.png"> <img src="maktablog/media/default/categories.png">
-<img src="maktablog/media/default/post1.png"> <img src="maktablog/media/default/tagsLike.png"> <img src="maktablog/media/default/comment.png"> 
 
 ##### Good Luck!
 
