@@ -49,8 +49,7 @@ Go to maktablog directory and in terminal:
 
 
 <img src="maktablog/media/default/main_page.png"> <img src="maktablog/media/default/categories.png">
-<img src="maktablog/media/default/comment.png"> <img src="maktablog/media/default/post1.png">
-<img src="maktablog/media/default/tagsLike.png"> 
+<img src="maktablog/media/default/post1.png"> <img src="maktablog/media/default/tagsLike.png"> <img src="maktablog/media/default/comment.png"> 
 
 ##### Good Luck!
 
