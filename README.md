@@ -24,6 +24,8 @@ Authenticated users in this site are divided into 4 groups with special permissi
 
 
 Some examples of photos from the blog site are displayed below:
+
+
 <img src="maktablog/media/default/main_page.png"> <img src="maktablog/media/default/categories.png">
 <img src="maktablog/media/default/post1.png"> <img src="maktablog/media/default/tagsLike.png"> <img src="maktablog/media/default/comment.png"> 
 
