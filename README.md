@@ -48,9 +48,9 @@ Go to maktablog directory and in terminal:
 ```
 
 
-<img src="maktablog/media/default/main_page.png" width="325" height="325"> <img src="maktablog/media/default/categories.png" width="325" height="325">
-<img src="maktablog/media/default/comment.png" width="175" height="175"> <img src="maktablog/media/default/post1.png" width="175" height="175">
-<img src="maktablog/media/default/tagsLike.png" width="175" height="175"> 
+<img src="maktablog/media/default/main_page.png"> <img src="maktablog/media/default/categories.png">
+<img src="maktablog/media/default/comment.png"> <img src="maktablog/media/default/post1.png">
+<img src="maktablog/media/default/tagsLike.png"> 
 
 ##### Good Luck!
 
