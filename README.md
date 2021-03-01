@@ -1,5 +1,5 @@
 
-# Blog :: Django Project :iran:
+# Blog :: Django Project
 ![Django](https://img.shields.io/badge/django-blog-green) ![HTML](https://img.shields.io/badge/HTML-blog-red) ![CSS](https://img.shields.io/badge/CSS-blog-blue)
 ![JS](https://img.shields.io/badge/JS-blog-orange) ![BOOTSTRAP](https://img.shields.io/badge/Bootstrap-blog-purple)
 ## Table of contents
