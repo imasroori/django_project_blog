@@ -19,7 +19,6 @@ class CustomUserAdmin(admin.ModelAdmin):
         ("اطلاعات کاربری", {'fields': (
             'username', 'password', 'email', 'first_name', 'last_name', 'is_active', 'is_staff', 'is_superuser',)}),
         ("گروه کاربری و اجازه ها", {'fields': ('groups', 'user_permissions')}),
-
     )
 
     list_display = ['username', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser', ]
@@ -145,8 +144,6 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ['title', 'user', 'activated', 'verificated', 'num_likes', 'num_dislikes', 'num_comments',
                     'show_link_comments', ]
     list_display_links = ('title', 'show_link_comments',)
-
-    # filter_horizontal = ['likes', 'dislikes', 'star']
 
     def show_link_comments(self, obj):
         return mark_safe('<a class="btn" href="/%s/show_post/#comments-post">نمایش نظرات</a>' % obj.id)

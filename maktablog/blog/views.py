@@ -1,17 +1,18 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.db.models import Q
+from django.contrib.auth.models import User, Group, Permission
+from django.db.models import Q, Count
 from django.db.models import Value as V
 from django.db.models.functions import Concat
 from django.shortcuts import render, redirect
 from django.views import generic
 from khayyam import JalaliDate
 from persiantools import jdatetime
-
+import random
 from .forms import SignUpForm, UserUpdateForm, UserInfoUpdateForm
 from .models import Post, Category, Label
+from .views_functions import simple_search, advanced_search
 
 
 class SearchPostView(generic.ListView):
@@ -27,15 +28,9 @@ class SearchPostView(generic.ListView):
         """
         query = request.GET.get('query', None)
         if query:
-            print(query)
-            qs = Post.objects.annotate(full_name=Concat('user__first_name', V(' '), 'user__last_name')).filter(
-                Q(title__regex=r'^.*{}.*'.format(query)) | Q(text__regex=r'^.*{}.*'.format(query)) | Q(
-                    labelpost__label_name__regex=r'^.*{}.*'.format(query)) | Q(
-                    full_name__regex=r'^.*{}.*'.format(query))).distinct()
-            context = {
-                'posts': qs,
-            }
+            context = simple_search(query)
             return render(request, self.template_name, context)
+
         elif (request.GET.get('title', None) or request.GET.get('text', None) or
               request.GET.get('writer', None) or request.GET.get('label', None) or
               request.GET.get('date-start', None) or request.GET.get('date-end', None)):
@@ -43,29 +38,18 @@ class SearchPostView(generic.ListView):
             q_text = request.GET.get('text', None)
             q_writer = request.GET.get('writer', None)
             q_label = request.GET.get('label', None)
-            qs = Post.objects.annotate(full_name=Concat('user__first_name', V(' '), 'user__last_name')).filter(
-                Q(title__regex=q_title) & Q(text__regex=q_text) & Q(
-                    labelpost__label_name__regex=q_label) & Q(
-                    full_name__regex=q_writer)).distinct()
+
             s_date = request.GET.get('date-start', None)
             e_date = request.GET.get('date-end', None)
-            if s_date:
-                strt_date = s_date.split('/')
-                from_date = JalaliDate(int(strt_date[0]), int(strt_date[1]), int(strt_date[2])).todate()
-                qs = qs.filter(Q(created_at__gte=from_date))
-
-            if e_date:
-                end_date = e_date.split('/')
-                to_date = JalaliDate(int(end_date[0]), int(end_date[1]), int(end_date[2])).todate()
-                qs = qs.filter(Q(created_at__lte=to_date))
-
-            context = {
-                'posts': qs,
-            }
+            context = advanced_search(q_label=q_label, q_title=q_title, q_text=q_text, q_writer=q_writer, s_date=s_date,
+                                      e_date=e_date)
+            if context == 'error':
+                messages.add_message(request, messages.WARNING, 'قالب تاریخ را به درستی وارد کنید!')
+                return render(request, self.template_name, {'posts_advanced_search': [""]})
             return render(request, self.template_name, context)
         else:
             messages.add_message(request, messages.WARNING, 'لطفا در محل جستجو چیزی وارد کنید.')
-            return render(request, self.template_name, {'posts': [""]})
+            return render(request, self.template_name, {'posts_advanced_search': [""]})
 
 
 class ShowAllCategories(generic.ListView):
@@ -119,7 +103,11 @@ class IndexView(generic.ListView):
     context_object_name = 'posts'
 
     def get_queryset(self):
-        return Post.objects.all().filter(activated=True, verificated=True)
+        ids = [i.id for i in Post.objects.filter(activated=True, verificated=True)]
+        random.shuffle(ids)
+        shuffled = [Post.objects.get(id=i) for i in ids]
+        query_set = shuffled[:6]
+        return query_set
 
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
@@ -183,7 +171,12 @@ class PopularPosts(generic.ListView):
     context_object_name = 'posts'
 
     def get_queryset(self):
-        return Post.objects.all().filter(activated=True)
+        return Post.objects.annotate(like_count=Count('likes')).filter(activated=True).order_by('-like_count')[:20]
+
+    def get_context_data(self, **kwargs):
+        context = super(PopularPosts, self).get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
 
 class NewestPosts(generic.ListView):
@@ -192,7 +185,7 @@ class NewestPosts(generic.ListView):
     context_object_name = 'posts'
 
     def get_queryset(self):
-        return Post.objects.all().filter(title__contains='برف')
+        return Post.objects.all().order_by('-created_at')[:20]
 
     def get_context_data(self, **kwargs):
         context = super(NewestPosts, self).get_context_data(**kwargs)
@@ -232,6 +225,13 @@ def signup(request):
             password = signup_form.cleaned_data.get('password1')
 
             user = authenticate(username=username, password=password)
+            groups = Group.objects.all()
+            for g in groups:
+                if Permission.objects.get(name='Can add post') not in g.permissions.all():
+                    simple_group = g
+                    user.groups.add(simple_group.id)
+                    break
+
             login(request, user)
             messages.add_message(request, messages.SUCCESS, 'ثبت نام شما با موفقیت انجام شد، خوش آمدید')
             return redirect("/blog/")
@@ -253,8 +253,38 @@ class UserStaredPosts(generic.ListView):
 
     def get(self, request, *args, **kwargs):
         user = User.objects.get(username=request.user)
-        stared_posts = Post.objects.filter(star=True)
+        qs = Post.objects.all()
+        stared_posts = []
+        for post in qs:
+            if user not in post.star.all():
+                continue
+            stared_posts.append(post)
+        # stared_posts = qs
         context = {
             'stared_posts': stared_posts,
         }
         return render(request, self.template_name, context)
+
+
+class AboutUsView(generic.ListView):
+    """
+    Class-based view for rendering About-Us page
+    """
+    template_name = 'blog/about_us.html'
+    model = Category
+    context_object_name = 'categories'
+
+    def get_queryset(self):
+        return Category.objects.all()
+
+
+class Roles(generic.ListView):
+    """
+    Class-based view for rendering Roles page
+    """
+    template_name = 'blog/roles.html'
+    model = Category
+    context_object_name = 'categories'
+
+    def get_queryset(self):
+        return Category.objects.all()

@@ -3,8 +3,166 @@
 {% block content %}
 {% block sidebar %} {% endblock %}
 <div class="container">
-    {% if posts %}
-    {% for post in posts %}
+    {% if posts_text or posts_writer or posts_title or posts_label %}
+    <ul class="justify-content-center nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link text-danger" id="pills-filter-text">فیلتر بر اساس:</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" id="pills-text-tab" data-toggle="pill" href="#pills-text" role="tab"
+               aria-controls="pills-text" aria-selected="true">متن</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-title-tab" data-toggle="pill" href="#pills-title" role="tab"
+               aria-controls="pills-title" aria-selected="false">عنوان</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-writer-tab" data-toggle="pill" href="#pills-writer" role="tab"
+               aria-controls="pills-writer" aria-selected="false">نویسنده</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-tag-tab" data-toggle="pill" href="#pills-tag" role="tab"
+               aria-controls="pills-tag" aria-selected="false">برچسب ها</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-text" role="tabpanel" aria-labelledby="pills-text-tab">
+
+            {% if posts_text %}
+            {% for post in posts_text %}
+            {% if post.activated and post.verificated %}
+            <a class="text-decoration-none m-5" href="{% url 'blog:show_post' post.id %}">
+
+                <div class="row">
+
+                    <div class="col-12 d-flex align-items-end border rounded"
+                         style="background-image: url(/media/{{post.image }}); height:150px">
+
+                        <div class="mb-4 mr-3 ml-2"><img class="rounded-circle" style="width:40px;height:40px"
+                                                         src="/media/{{post.user.userinfo.image}}" alt="555"></div>
+                        <div class="card-body text-right">
+                            <h5 class="card-title">{{post.title}}</h5>
+                            <p class="card-text"><small class="">{{post.created_at|convert_to_jdate}}</small></p>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </a>
+            {% endif %}
+            {% endfor %}
+            {% else %}
+            <div class="text-center alert alert-danger p-3 mb-5 mt-5"> متاسفانه پستی که متن آن شامل عبارت مورد نظر شما
+                باشد در پایگاه داده ثبت نشده است.
+            </div>
+            {% endif %}
+
+        </div>
+        <div class="tab-pane fade" id="pills-title" role="tabpanel" aria-labelledby="pills-title-tab">
+
+            {% if posts_title %}
+            {% for post in posts_title %}
+            {% if post.activated and post.verificated %}
+            <a class="text-decoration-none m-5" href="{% url 'blog:show_post' post.id %}">
+
+                <div class="row">
+
+                    <div class="col-12 d-flex align-items-end border rounded"
+                         style="background-image: url(/media/{{post.image }}); height:150px">
+
+                        <div class="mb-4 mr-3 ml-2"><img class="rounded-circle" style="width:40px;height:40px"
+                                                         src="/media/{{post.user.userinfo.image}}" alt="555"></div>
+                        <div class="card-body text-right">
+                            <h5 class="card-title">{{post.title}}</h5>
+                            <p class="card-text"><small class="">{{post.created_at|convert_to_jdate}}</small></p>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </a>
+            {% endif %}
+            {% endfor %}
+            {% else %}
+            <div class="text-center alert alert-danger p-3 mb-5 mt-5">متاسفانه پستی که عنوانش شامل عبارت مورد نظر شما
+                باشد در پایگاه داده ثبت نشده
+                است.
+            </div>
+            {% endif %}
+
+        </div>
+        <div class="tab-pane fade" id="pills-writer" role="tabpanel" aria-labelledby="pills-writer-tab">
+
+            {% if posts_writer %}
+            {% for post in posts_writer %}
+            {% if post.activated and post.verificated %}
+            <a class="text-decoration-none m-5" href="{% url 'blog:show_post' post.id %}">
+
+                <div class="row">
+
+                    <div class="col-12 d-flex align-items-end border rounded"
+                         style="background-image: url(/media/{{post.image }}); height:150px">
+
+                        <div class="mb-4 mr-3 ml-2"><img class="rounded-circle" style="width:40px;height:40px"
+                                                         src="/media/{{post.user.userinfo.image}}" alt="555"></div>
+                        <div class="card-body text-right">
+                            <h5 class="card-title">{{post.title}}</h5>
+                            <p class="card-text"><small class="">{{post.created_at|convert_to_jdate}}</small></p>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </a>
+            {% endif %}
+            {% endfor %}
+            {% else %}
+            <div class="text-center alert alert-danger p-3 mb-5 mt-5">متاسفانه پستی که نام نویسنده اش شامل عبارت مورد
+                نظر باشد، در
+                پایگاه داده ثبت نشده است.
+            </div>
+            {% endif %}
+
+        </div>
+        <div class="tab-pane fade" id="pills-tag" role="tabpanel" aria-labelledby="pills-tag-tab">
+
+            {% if posts_label %}
+            {% for post in posts_label %}
+            {% if post.activated and post.verificated %}
+            <a class="text-decoration-none m-5" href="{% url 'blog:show_post' post.id %}">
+
+                <div class="row">
+
+                    <div class="col-12 d-flex align-items-end border rounded"
+                         style="background-image: url(/media/{{post.image }}); height:150px">
+
+                        <div class="mb-4 mr-3 ml-2"><img class="rounded-circle" style="width:40px;height:40px"
+                                                         src="/media/{{post.user.userinfo.image}}" alt="555"></div>
+                        <div class="card-body text-right">
+                            <h5 class="card-title">{{post.title}}</h5>
+                            <p class="card-text"><small class="">{{post.created_at|convert_to_jdate}}</small></p>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </a>
+            {% endif %}
+            {% endfor %}
+            {% else %}
+            <div class="text-center alert alert-danger p-3 mb-5 mt-5"> متاسفانه پستی که حاوی چنین برچسبی باشد، در پایگاه
+                داده ثبت نشده است.
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+    {% elif posts_advanced_search %}
+    {% for post in posts_advanced_search %}
     {% if post.activated and post.verificated %}
     <a class="text-decoration-none m-5" href="{% url 'blog:show_post' post.id %}">
 
@@ -13,7 +171,8 @@
             <div class="col-12 d-flex align-items-end border rounded"
                  style="background-image: url(/media/{{post.image }}); height:150px">
 
-                <div class="mb-4 mr-3 ml-2"><img class="rounded-circle" style="width:40px;height:40px" src="/media/{{post.user.userinfo.image}}" alt="555"></div>
+                <div class="mb-4 mr-3 ml-2"><img class="rounded-circle" style="width:40px;height:40px"
+                                                 src="/media/{{post.user.userinfo.image}}" alt="555"></div>
                 <div class="card-body text-right">
                     <h5 class="card-title">{{post.title}}</h5>
                     <p class="card-text"><small class="">{{post.created_at|convert_to_jdate}}</small></p>
@@ -27,8 +186,10 @@
     {% endif %}
     {% endfor %}
     {% else %}
-    <div class="text-center alert alert-danger p-5 mb-5 mt-5">نتیجه ای یافت نشد. <br>متاسفانه چنین اطلاعاتی در پایگاه داده ثبت نشده است</div>
+    <div class="text-center alert alert-danger p-3 mb-5 mt-5">متاسفیم، نتیجه ای یافت نشد.
+    </div>
     {% endif %}
+
 </div>
 
 {% endblock %}

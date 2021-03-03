@@ -8,7 +8,7 @@ from tinymce.models import HTMLField
 class UserInfo(models.Model):
     alias_name = models.CharField('نام مستعار', max_length=30)
     phone_number = models.CharField('شماره تلفن', max_length=11)
-    image = models.ImageField('عکس پروفایل', upload_to='images/', null=True, blank=True)
+    image = models.ImageField('عکس پروفایل', upload_to='images/', default='default/default-avatar.jpg')
     user = models.OneToOneField(User, verbose_name='کاربر', on_delete=models.CASCADE)
 
     @property

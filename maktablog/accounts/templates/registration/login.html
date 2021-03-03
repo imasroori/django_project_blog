@@ -13,13 +13,7 @@
         {% else %}
         <input type="hidden" name="next" value="/blog/">
         {% endif %}
-        <label for="user-group">گروه کاربری</label>
-        <select id="user-group" name="user-group" class="form-control">
-            {% for choice in group.objects.all %}
-            <option>{{choice}}</option>
-            {{choice}}
-            {% endfor %}
-        </select>
+
 
         <div class="d-flex mt-3 justify-content-center">
             <button type="submit" class="btn btn-primary m-2">ورود</button>

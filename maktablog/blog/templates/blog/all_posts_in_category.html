@@ -2,7 +2,7 @@
 {% load custom_tags %}
 
 {% block content %}
-{% if post_in_category.post_set.all %}
+{% if post_in_category.post_set.all or post_in_category.category_sub.all  %}
 <div class="container text-right">
     <div class="row pt-5 pb-5 mb-5">
 
@@ -35,6 +35,72 @@
             </div>
             {% endif %}
             {% endfor %}
+
+            {% if post_in_category.category_sub.all %}
+            {% for c in post_in_category.category_sub.all %}
+            {% for item in c.post_set.all %}
+            {% if item.activated and item.verificated %}
+            <div class="card mb-3">
+                <a class="text-decoration-none" href="{% url 'blog:show_post' item.id %}">
+                    <div class="row">
+
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title text-right">{{item.title}}</h5>
+                                <p class="card-text text-right" style="height:150px;  white-space: nowrap;  overflow: hidden;
+                    text-overflow: ellipsis;">{{item.text}}</p>
+                                <span class="card-text"><small
+                                        class="text-muted">{{item.created_at|convert_to_jdate}} , </small></span>
+                                <span class="card-text"><small
+                                        class="text-muted">نویسنده: {{item.user.first_name}}</small></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <img class="w-100 h-100" src="/media/{{item.image}}"
+                                 alt="گشتیم ولی عکسی نبود لطفا اصرار نکن!!!">
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endif %}
+            {% endfor %}
+
+            {% if c.category_sub.all %}
+            {% for c2 in c.category_sub.all %}
+            {% for item in c2.post_set.all %}
+            {% if item.activated and item.verificated %}
+            <div class="card mb-3">
+                <a class="text-decoration-none" href="{% url 'blog:show_post' item.id %}">
+                    <div class="row">
+
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title text-right">{{item.title}}</h5>
+                                <p class="card-text text-right" style="height:150px;  white-space: nowrap;  overflow: hidden;
+                    text-overflow: ellipsis;">{{item.text}}</p>
+                                <span class="card-text"><small
+                                        class="text-muted">{{item.created_at|convert_to_jdate}} , </small></span>
+                                <span class="card-text"><small
+                                        class="text-muted">نویسنده: {{item.user.first_name}}</small></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <img class="w-100 h-100" src="/media/{{item.image}}"
+                                 alt="گشتیم ولی عکسی نبود لطفا اصرار نکن!!!">
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+            {% endif %}
+
+
+            {% endfor %}
+            {% endif %}
+
+
         </div>
 
     </div>
