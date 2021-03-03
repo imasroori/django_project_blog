@@ -18,5 +18,7 @@ urlpatterns = [
     (path('user_stared_posts', views.UserStaredPosts.as_view(), name='user_stared_posts')),
     (path('newest_posts', views.NewestPosts.as_view(), name='newest_posts')),
     (path('search', views.SearchPostView.as_view(), name='search')),
+    (path('about_us', views.AboutUsView.as_view(), name='about_us')),
+    (path('roles', views.Roles.as_view(), name='roles')),
 
 ]

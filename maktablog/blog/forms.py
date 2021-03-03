@@ -12,7 +12,7 @@ class SignUpForm(UserCreationForm):
     """
     alias_name = forms.CharField(label='نام مستعار', max_length=100, help_text='نام مستعار')
     phone_number = forms.CharField(label='شماره تلفن', max_length=20, required=False)
-    image = forms.ImageField(label="عکس پروفایل", required=False)
+    image = forms.ImageField(label="عکس پروفایل",help_text='اختیاری', required=False, initial='default/default-avatar.jpg')
 
     class Meta:
         model = User
