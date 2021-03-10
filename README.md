@@ -55,13 +55,13 @@ After create venv, you should activate your venv, so:
 ```
 Then, install all requirements on your venv:
 ```
-pip install -r requirements.txt
+...\django_project_blog\maktablog>pip install -r requirements.txt
 ```
-After install all packages you should delete all files in folder migrations that there is in this address:
+After install all packages you should delete all files in folder migrations except \_\_init__.py that there is in this address:
 ```
 ...\django_project_blog\maktablog\blog\migrations
 ```
-In next step, you should set your database and add local_settings.py like local_settings.py.sample.
+In next step, you should set your database and add local_settings.py like local_settings.py.sample file to project.
 Then, you shoud use this commands for set superuser and database settings:
 ```
 ...\django_project_blog\maktablog>python manage.py createsuperuser
