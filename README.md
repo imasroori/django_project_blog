@@ -44,16 +44,35 @@ For more information go to requirements.txt file in repository.
 
 	
 ## Setup
-To run this project, install all requirements:
-```
-pip install requirements.txt
-```
-After install all packages you can run server and visit the site and signup!
 
-Go to maktablog directory and in terminal:
+In first to start this project you have to create a virtual enviroment, so:
+```
+...\django_project_blog>python -m venv venv
+```
+After create venv, you should activate your venv, so:
+```
+...\django_project_blog>venv\Scripts\activate   <note:in windows command prompt>
+```
+Then, install all requirements on your venv:
+```
+pip install -r requirements.txt
+```
+After install all packages you should delete all files in folder migrations that there is in this address:
+```
+...\django_project_blog\maktablog\blog\migrations
+```
+After install all packages you should set your database and add local_settings.py like local_settings.py.sample.
+Then, you shoud use this commands for set superuser and database settings:
+```
+...\django_project_blog\maktablog>python manage.py createsuperuser
+...\django_project_blog\maktablog>python manage.py makemigrations
+...\django_project_blog\maktablog>python manage.py migrate
 
 ```
-...\maktablog> python manage.py runserver
+In final, for run default server django,go to maktablog directory and in terminal:
+
+```
+...\django_project_blog\maktablog>python manage.py runserver
 ```
 
 
