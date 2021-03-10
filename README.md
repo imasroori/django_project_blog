@@ -61,7 +61,7 @@ After install all packages you should delete all files in folder migrations that
 ```
 ...\django_project_blog\maktablog\blog\migrations
 ```
-After install all packages you should set your database and add local_settings.py like local_settings.py.sample.
+In next step, you should set your database and add local_settings.py like local_settings.py.sample.
 Then, you shoud use this commands for set superuser and database settings:
 ```
 ...\django_project_blog\maktablog>python manage.py createsuperuser
