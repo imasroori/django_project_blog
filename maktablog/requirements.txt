@@ -1,10 +1,8 @@
-Django
+django
 django-bootstrap-form
 Pillow
 Khayyam
-django-tinymce
 djangorestframework
-PIL
 pygments
 django-filter
 persiantools
