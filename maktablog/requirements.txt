@@ -6,3 +6,4 @@ djangorestframework
 pygments
 django-filter
 persiantools
+psycopg2
