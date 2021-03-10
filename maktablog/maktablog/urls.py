@@ -24,9 +24,8 @@ urlpatterns = [
                   path('', include('blog.urls')),
                   path('blog/', include('blog.urls')),
                   path('api/', include('api.urls')),
-                  path('tinymce/', include('tinymce.urls')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 admin.site.site_header = 'وبلاگ سخن'
-admin.site.index_title= 'وبلاگ سخن'
+admin.site.index_title = 'وبلاگ سخن'
 admin.site.site_title = 'پنل مدیریت وبلاگ سخن'
